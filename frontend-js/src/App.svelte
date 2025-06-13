@@ -1,11 +1,11 @@
 <script>
   import "carbon-components-svelte/css/all.css";
   import {
-    Button,
+    // Button,
     Header,
-    HeaderNav,
-    HeaderNavItem,
-    HeaderNavMenu,
+    // HeaderNav,
+    // HeaderNavItem,
+    // HeaderNavMenu,
     SideNav,
     SideNavItems,
     SideNavMenu,
@@ -14,28 +14,29 @@
     SideNavDivider,
     SkipToContent,
     Content,
-    Grid,
-    Row,
-    Column,
+    // Grid,
+    // Row,
+    // Column,
     Theme,
     Toggle,
   } from "carbon-components-svelte";
   let isSideNavOpen = true;
-  let theme = localStorage.getItem("__carbon-theme") ?? "g10";
+
+  //theme switcher data
+  let theme = localStorage.getItem("__carbon-theme") ?? "g10"; //check if get null value set as g10 (light theme)
   let toggled = theme === "g90" ? true : false;
   
+  // svelte-spa-router example
   import Router from 'svelte-spa-router'
   import routes from './routes'
 </script>
+
 <Theme bind:theme persist persistKey="__carbon-theme" />
 
 <Header company="MedTrace PKM" platformName="v.0.0.1" bind:isSideNavOpen>
   <svelte:fragment slot="skip-to-content">
     <SkipToContent />
   </svelte:fragment>
-  
-
-
 </Header>
 
 <SideNav bind:isOpen={isSideNavOpen}>
@@ -61,5 +62,4 @@
 
 <Content>
   <Router {routes} />
-
 </Content>
