@@ -14,7 +14,7 @@
     "vite": "^6.3.5"
   },
   "dependencies": {
-    "@picocss/pico": "^2.1.1",
+    "carbon-components-svelte": "^0.89.4",
     "svelte-spa-router": "^4.0.1"
   }
 }

@@ -1,29 +1,56 @@
 <script>
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
-  import '@picocss/pico'
-  import Router from 'svelte-spa-router'
-  import routes from './routes'
+  import "carbon-components-svelte/css/g10.css";
+  import {
+    Button,
+    Header,
+    HeaderNav,
+    HeaderNavItem,
+    HeaderNavMenu,
+    SideNav,
+    SideNavItems,
+    SideNavMenu,
+    SideNavMenuItem,
+    SideNavLink,
+    SideNavDivider,
+    SkipToContent,
+    Content,
+    Grid,
+    Row,
+    Column,
+  } from "carbon-components-svelte";
 
-  import Sun from './lib/svg/sun-material.svelte'
-  import Moon from './lib/svg/moon-material.svelte'
+  let isSideNavOpen = false;
 </script>
 
-<main class="container">
+<Header company="MedTrace PKM" platformName="v.0.0.1" bind:isSideNavOpen>
+  <svelte:fragment slot="skip-to-content">
+    <SkipToContent />
+  </svelte:fragment>
 
-<nav>
-  <ul>
-    <li><strong>MedTrace PKM</strong></li>
-    <li><a style="text-decoration:none" href="/">Home</a></li>
-    <li><button class="contrast"><Moon /></button></li>
-  </ul>
-			
-  <ul>
-    <li><a href="#">About</a></li>
-	<li><a href="#">Products</a></li>
-	<li><a href="#">Products2</a></li>
-  </ul>
-</nav>
+</Header>
 
-</main>
+<SideNav bind:isOpen={isSideNavOpen}>
+  <SideNavItems>
+    <SideNavLink text="Link 1" />
+    <SideNavLink text="Link 2" />
+    <SideNavLink text="Link 3" />
+    <SideNavMenu text="Menu">
+      <SideNavMenuItem href="/" text="Link 1" />
+      <SideNavMenuItem href="/" text="Link 2" />
+      <SideNavMenuItem href="/" text="Link 3" />
+    </SideNavMenu>
+    <SideNavDivider />
+    <SideNavLink text="Link 4" />
+  </SideNavItems>
+</SideNav>
+
+<Content>
+  <Grid fullWidth>
+    <Row>
+      <Column>
+        <h1>Welcome</h1>
+      </Column>
+      
+    </Row>
+  </Grid>
+</Content>
