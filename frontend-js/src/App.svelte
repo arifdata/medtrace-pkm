@@ -16,7 +16,7 @@
     Content,
     // Grid,
     // Row,
-    // Column,
+    Column,
     Theme,
     Toggle,
   } from "carbon-components-svelte";
@@ -50,11 +50,14 @@
     </SideNavMenu>
     <SideNavDivider />
     <SideNavMenuItem>
-    <Toggle labelText="Dark Mode" size="sm" on:toggle={(e) => {
+    <Column noGutterRight=false padding=true>
+    <Toggle labelText="Dark Theme" size="sm" on:toggle={(e) => {
 		theme = e.detail.toggled ? "g90" : "g10";
 		toggled = e.detail.toggled;
 	}} bind:toggled />
+	</Column>
     </SideNavMenuItem>
+    <SideNavDivider />
     <SideNavLink text="Buku Manual" />
     
   </SideNavItems>
