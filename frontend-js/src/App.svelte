@@ -1,5 +1,5 @@
 <script>
-  import "carbon-components-svelte/css/g10.css";
+  import "carbon-components-svelte/css/all.css";
   import {
     Button,
     Header,
@@ -17,40 +17,49 @@
     Grid,
     Row,
     Column,
+    Theme,
+    Toggle,
   } from "carbon-components-svelte";
-
-  let isSideNavOpen = false;
+  let isSideNavOpen = true;
+  let theme = localStorage.getItem("__carbon-theme") ?? "g10";
+  let toggled = theme === "g90" ? true : false;
+  
+  import Router from 'svelte-spa-router'
+  import routes from './routes'
 </script>
+<Theme bind:theme persist persistKey="__carbon-theme" />
 
 <Header company="MedTrace PKM" platformName="v.0.0.1" bind:isSideNavOpen>
   <svelte:fragment slot="skip-to-content">
     <SkipToContent />
   </svelte:fragment>
+  
+
 
 </Header>
 
 <SideNav bind:isOpen={isSideNavOpen}>
   <SideNavItems>
-    <SideNavLink text="Link 1" />
-    <SideNavLink text="Link 2" />
-    <SideNavLink text="Link 3" />
+    <SideNavLink href="#/" text="Home" />
+    <SideNavLink href="#/hello/sveltes" text="Say Hi!" />
     <SideNavMenu text="Menu">
-      <SideNavMenuItem href="/" text="Link 1" />
+      <SideNavMenuItem href="#/wild/card" text="Wild Card" />
       <SideNavMenuItem href="/" text="Link 2" />
       <SideNavMenuItem href="/" text="Link 3" />
     </SideNavMenu>
     <SideNavDivider />
-    <SideNavLink text="Link 4" />
+    <SideNavMenuItem>
+    <Toggle labelText="Dark Mode" size="sm" on:toggle={(e) => {
+		theme = e.detail.toggled ? "g90" : "g10";
+		toggled = e.detail.toggled;
+	}} bind:toggled />
+    </SideNavMenuItem>
+    <SideNavLink text="Buku Manual" />
+    
   </SideNavItems>
 </SideNav>
 
 <Content>
-  <Grid fullWidth>
-    <Row>
-      <Column>
-        <h1>Welcome</h1>
-      </Column>
-      
-    </Row>
-  </Grid>
+  <Router {routes} />
+
 </Content>
