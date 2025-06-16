@@ -6,6 +6,9 @@
     // HeaderNav,
     // HeaderNavItem,
     // HeaderNavMenu,
+    Modal,
+    HeaderUtilities,
+    HeaderGlobalAction,
     SideNav,
     SideNavItems,
     SideNavMenu,
@@ -25,29 +28,36 @@
 
   //theme switcher data
   let theme = localStorage.getItem("__carbon-theme") ?? "g10"; //check if get null value set as g10 (light theme)
-  let toggled = theme === "g90" ? true : false;
-  
-  // svelte-spa-router example
-  import Router from 'svelte-spa-router'
-  import routes from './routes'
+  let lightMode = theme === "g10" ? true : false;
 
-  import client from './pb/client'
+  // svelte-spa-router example
+  import Router from "svelte-spa-router";
+  import routes from "./routes";
+
+  import client from "./pb/client";
 
   let email = "";
   let password = "";
 
   let isLoggedIn = client.authStore.isValid;
+  let isModalOpen = false;
 
-  async function login(){
-    await client.collection('_superusers').authWithPassword(email, password).then((val) => {
+  async function login() {
+    await client
+      .collection("_superusers")
+      .authWithPassword(email, password)
+      .then((val) => {
         isLoggedIn = client.authStore.isValid;
-    });
+      });
   }
 
-  function logout(){
+  function logout() {
     client.authStore.clear();
     isLoggedIn = client.authStore.isValid;
   }
+
+  // some icons
+  import { Sun, Moon, Logout, Login } from "carbon-icons-svelte";
 </script>
 
 <Theme bind:theme persist persistKey="__carbon-theme" />
@@ -56,6 +66,51 @@
   <svelte:fragment slot="skip-to-content">
     <SkipToContent />
   </svelte:fragment>
+  <HeaderUtilities>
+    {#if lightMode}
+      <!-- light mode button -->
+      <HeaderGlobalAction
+        iconDescription="Mode Gelap"
+        tooltipAlignment="end"
+        icon={Moon}
+        on:click={() => {
+          lightMode = false;
+          theme = lightMode ? "g10" : "g90";
+        }}
+      />
+    {:else}
+      <!-- light mode button -->
+      <HeaderGlobalAction
+        iconDescription="Mode Terang"
+        tooltipAlignment="end"
+        icon={Sun}
+        on:click={() => {
+          lightMode = true;
+          theme = lightMode ? "g10" : "g90";
+        }}
+      />
+    {/if}
+
+    {#if isLoggedIn}
+      <HeaderGlobalAction
+        iconDescription="Log out"
+        tooltipAlignment="end"
+        icon={Logout}
+        on:click={() => {
+          logout();
+        }}
+      />
+    {:else}
+      <HeaderGlobalAction
+        iconDescription="Log in"
+        tooltipAlignment="end"
+        icon={Login}
+        on:click={() => {
+          alert("login");
+        }}
+      />
+    {/if}
+  </HeaderUtilities>
 </Header>
 
 <SideNav bind:isOpen={isSideNavOpen}>
@@ -68,35 +123,26 @@
       <SideNavMenuItem href="/" text="Link 3" />
     </SideNavMenu>
     <SideNavDivider />
-    <SideNavMenuItem>
-    <Column noGutterRight=false padding=true>
-    <Toggle labelText="Dark Theme" size="sm" on:toggle={(e) => {
-		theme = e.detail.toggled ? "g90" : "g10";
-		toggled = e.detail.toggled;
-	}} bind:toggled />
-      
-	</Column>
-    </SideNavMenuItem>
-    <SideNavDivider />
     <SideNavLink text="Buku Manual" />
-    
   </SideNavItems>
 </SideNav>
 
 <Content>
+  <TextInput
+    bind:value={email}
+    labelText="email"
+    placeholder="Masukkan email..."
+  />
+  <TextInput
+    bind:value={password}
+    labelText="password"
+    placeholder="Masukkan password..."
+  />
 
-<TextInput bind:value={email} labelText="email" placeholder="Masukkan email..." />
-<TextInput bind:value={password} labelText="password" placeholder="Masukkan password..." />
-
-
-{#if isLoggedIn}
-<Button on:click={logout}>
-  Logout
-</Button>
-{:else}
-<Button on:click={login}>
-  Login
-</Button>
-{/if}
+  {#if isLoggedIn}
+    <Button on:click={logout}>Logout</Button>
+  {:else}
+    <Button on:click={login}>Login</Button>
+  {/if}
   <Router {routes} />
 </Content>
