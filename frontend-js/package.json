@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "carbon-components-svelte": "^0.89.4",
+    "pocketbase": "^0.26.1",
     "svelte-spa-router": "^4.0.1"
   }
 }

@@ -1,7 +1,7 @@
 <script>
   import "carbon-components-svelte/css/all.css";
   import {
-    // Button,
+    Button,
     Header,
     // HeaderNav,
     // HeaderNavItem,
@@ -16,6 +16,7 @@
     Content,
     // Grid,
     // Row,
+    TextInput,
     Column,
     Theme,
     Toggle,
@@ -29,6 +30,24 @@
   // svelte-spa-router example
   import Router from 'svelte-spa-router'
   import routes from './routes'
+
+  import client from './pb/client'
+
+  let email = "";
+  let password = "";
+
+  let isLoggedIn = client.authStore.isValid;
+
+  async function login(){
+    await client.collection('_superusers').authWithPassword(email, password).then((val) => {
+        isLoggedIn = client.authStore.isValid;
+    });
+  }
+
+  function logout(){
+    client.authStore.clear();
+    isLoggedIn = client.authStore.isValid;
+  }
 </script>
 
 <Theme bind:theme persist persistKey="__carbon-theme" />
@@ -55,6 +74,7 @@
 		theme = e.detail.toggled ? "g90" : "g10";
 		toggled = e.detail.toggled;
 	}} bind:toggled />
+      
 	</Column>
     </SideNavMenuItem>
     <SideNavDivider />
@@ -64,5 +84,19 @@
 </SideNav>
 
 <Content>
+
+<TextInput bind:value={email} labelText="email" placeholder="Masukkan email..." />
+<TextInput bind:value={password} labelText="password" placeholder="Masukkan password..." />
+
+
+{#if isLoggedIn}
+<Button on:click={logout}>
+  Logout
+</Button>
+{:else}
+<Button on:click={login}>
+  Login
+</Button>
+{/if}
   <Router {routes} />
 </Content>
