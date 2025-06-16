@@ -20,9 +20,10 @@
     // Grid,
     // Row,
     TextInput,
-    Column,
+    PasswordInput,
+    // Column,
     Theme,
-    Toggle,
+    // Toggle,
   } from "carbon-components-svelte";
   let isSideNavOpen = true;
 
@@ -40,7 +41,7 @@
   let password = "";
 
   let isLoggedIn = client.authStore.isValid;
-  let isModalOpen = false;
+  let open = false;
 
   async function login() {
     await client
@@ -106,12 +107,37 @@
         tooltipAlignment="end"
         icon={Login}
         on:click={() => {
-          alert("login");
+          open = true;
         }}
       />
     {/if}
   </HeaderUtilities>
 </Header>
+
+<Modal
+  bind:open
+  modalHeading="Login"
+  primaryButtonText="Log in"
+  secondaryButtonText="Batal"
+  on:click:button--secondary={() => (open = false)}
+  on:open
+  on:close
+  on:submit={() => {
+    login();
+    open = false;
+  }}
+>
+  <TextInput
+    bind:value={email}
+    labelText="Email"
+    placeholder="masukkan email..."
+  />
+  <PasswordInput
+    bind:value={password}
+    labelText="Password"
+    placeholder="masukkan password..."
+  />
+</Modal>
 
 <SideNav bind:isOpen={isSideNavOpen}>
   <SideNavItems>
@@ -123,26 +149,10 @@
       <SideNavMenuItem href="/" text="Link 3" />
     </SideNavMenu>
     <SideNavDivider />
-    <SideNavLink text="Buku Manual" />
+    <SideNavLink text="Buku Panduan" />
   </SideNavItems>
 </SideNav>
 
 <Content>
-  <TextInput
-    bind:value={email}
-    labelText="email"
-    placeholder="Masukkan email..."
-  />
-  <TextInput
-    bind:value={password}
-    labelText="password"
-    placeholder="Masukkan password..."
-  />
-
-  {#if isLoggedIn}
-    <Button on:click={logout}>Logout</Button>
-  {:else}
-    <Button on:click={login}>Login</Button>
-  {/if}
   <Router {routes} />
 </Content>
