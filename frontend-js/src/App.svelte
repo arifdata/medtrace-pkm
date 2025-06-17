@@ -1,4 +1,6 @@
 <script>
+  import Toastify from "toastify-js";
+  import "toastify-js/src/toastify.css";
   import "carbon-components-svelte/css/all.css";
   import {
     Button,
@@ -37,26 +39,54 @@
   let open = false;
 
   async function login() {
-	try {
-	await client
-      .collection("_superusers")
-      .authWithPassword(email, password)
-      .then(() => {
-		alert("Berhasil Log in");
-        isLoggedIn = client.authStore.isValid;
-      });
-	} catch (e) {
-	  alert(e);
-	}
+    try {
+      await client
+        .collection("_superusers")
+        .authWithPassword(email, password)
+        .then(() => {
+          Toastify({
+            text: "Berhasil Log in",
+            duration: 3000,
+            gravity: "bottom",
+            style: {
+              background: "#42be65",
+            },
+          }).showToast();
+          isLoggedIn = client.authStore.isValid;
+        });
+    } catch (e) {
+      Toastify({
+        text: "Gagal Log in: cek kembali input email & password anda.",
+        duration: 3000,
+        gravity: "bottom",
+        style: {
+          background: "#fa4d56",
+        },
+      }).showToast();
+    }
   }
 
   function logout() {
     client.authStore.clear();
     isLoggedIn = client.authStore.isValid;
+    Toastify({
+      text: "Berhasil log out",
+      duration: 3000,
+      gravity: "bottom",
+      style: {
+        background: "#4589ff",
+      },
+    }).showToast();
   }
 
   // some icons
-  import { Sun, Moon, Logout, Login, UserAvatarFilledAlt } from "carbon-icons-svelte";
+  import {
+    Sun,
+    Moon,
+    Logout,
+    Login,
+    UserAvatarFilledAlt,
+  } from "carbon-icons-svelte";
 </script>
 
 <Theme bind:theme persist persistKey="__carbon-theme" />
@@ -146,17 +176,17 @@
 
 <SideNav bind:isOpen={isSideNavOpen}>
   <SideNavItems>
-  {#if isLoggedIn}
-    <SideNavLink href="#/" text="Home" />
-    <SideNavLink href="#/hello/sveltes" text="Say Hi!" />
-    <SideNavMenu text="Menu">
-      <SideNavMenuItem href="#/wild/card" text="Wild Card" />
-      <SideNavMenuItem href="/" text="Link 2" />
-      <SideNavMenuItem href="/" text="Link 3" />
-    </SideNavMenu>
-  {:else}
-<SideNavLink text="Login untuk akses menu" />
-  {/if}
+    {#if isLoggedIn}
+      <SideNavLink href="#/" text="Home" />
+      <SideNavLink href="#/hello/sveltes" text="Say Hi!" />
+      <SideNavMenu text="Menu">
+        <SideNavMenuItem href="#/wild/card" text="Wild Card" />
+        <SideNavMenuItem href="/" text="Link 2" />
+        <SideNavMenuItem href="/" text="Link 3" />
+      </SideNavMenu>
+    {:else}
+      <SideNavLink text="Login untuk akses menu" />
+    {/if}
     <SideNavDivider />
     <SideNavLink text="Buku Panduan" />
   </SideNavItems>
