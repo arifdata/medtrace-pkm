@@ -3,9 +3,6 @@
   import {
     Button,
     Header,
-    // HeaderNav,
-    // HeaderNavItem,
-    // HeaderNavMenu,
     Modal,
     HeaderUtilities,
     HeaderGlobalAction,
@@ -17,13 +14,9 @@
     SideNavDivider,
     SkipToContent,
     Content,
-    // Grid,
-    // Row,
     TextInput,
     PasswordInput,
-    // Column,
     Theme,
-    // Toggle,
   } from "carbon-components-svelte";
   let isSideNavOpen = true;
 
@@ -37,19 +30,24 @@
 
   import client from "./pb/client";
 
-  let email = "";
-  let password = "";
+  let email = localStorage.getItem("__tmp-email") ?? "";
+  let password = localStorage.getItem("__tmp-password") ?? "";
 
   let isLoggedIn = client.authStore.isValid;
   let open = false;
 
   async function login() {
-    await client
+	try {
+	await client
       .collection("_superusers")
       .authWithPassword(email, password)
-      .then((val) => {
+      .then(() => {
+		alert("Berhasil Log in");
         isLoggedIn = client.authStore.isValid;
       });
+	} catch (e) {
+	  alert(e);
+	}
   }
 
   function logout() {
@@ -58,7 +56,7 @@
   }
 
   // some icons
-  import { Sun, Moon, Logout, Login } from "carbon-icons-svelte";
+  import { Sun, Moon, Logout, Login, UserAvatarFilledAlt } from "carbon-icons-svelte";
 </script>
 
 <Theme bind:theme persist persistKey="__carbon-theme" />
@@ -94,6 +92,11 @@
 
     {#if isLoggedIn}
       <HeaderGlobalAction
+        iconDescription={client.authStore.model.email}
+        tooltipAlignment="end"
+        icon={UserAvatarFilledAlt}
+      />
+      <HeaderGlobalAction
         iconDescription="Log out"
         tooltipAlignment="end"
         icon={Logout}
@@ -125,6 +128,8 @@
   on:submit={() => {
     login();
     open = false;
+    localStorage.setItem("__tmp-email", email);
+    localStorage.setItem("__tmp-password", password);
   }}
 >
   <TextInput
@@ -141,6 +146,7 @@
 
 <SideNav bind:isOpen={isSideNavOpen}>
   <SideNavItems>
+  {#if isLoggedIn}
     <SideNavLink href="#/" text="Home" />
     <SideNavLink href="#/hello/sveltes" text="Say Hi!" />
     <SideNavMenu text="Menu">
@@ -148,6 +154,9 @@
       <SideNavMenuItem href="/" text="Link 2" />
       <SideNavMenuItem href="/" text="Link 3" />
     </SideNavMenu>
+  {:else}
+<SideNavLink text="Login untuk akses menu" />
+  {/if}
     <SideNavDivider />
     <SideNavLink text="Buku Panduan" />
   </SideNavItems>
