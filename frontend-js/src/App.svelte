@@ -86,6 +86,8 @@
     Logout,
     Login,
     UserAvatarFilledAlt,
+    Locked,
+    Notebook,
   } from "carbon-icons-svelte";
 </script>
 
@@ -185,10 +187,10 @@
         <SideNavMenuItem href="/" text="Link 3" />
       </SideNavMenu>
     {:else}
-      <SideNavLink text="Login untuk akses menu" />
+      <SideNavLink icon={Locked} text="Akses dikunci" />
     {/if}
     <SideNavDivider />
-    <SideNavLink text="Buku Panduan" />
+    <SideNavLink icon={Notebook} href="https://github.com/arifdata/medtrace-pkm" text="Buku Panduan" />
   </SideNavItems>
 </SideNav>
 
