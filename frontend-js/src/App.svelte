@@ -88,6 +88,8 @@
     UserAvatarFilledAlt,
     Locked,
     Notebook,
+    Dashboard,
+    IbmConsultingAdvantageAssistant,
   } from "carbon-icons-svelte";
 </script>
 
@@ -179,12 +181,16 @@
 <SideNav bind:isOpen={isSideNavOpen}>
   <SideNavItems>
     {#if isLoggedIn}
-      <SideNavLink href="#/" text="Home" />
-      <SideNavLink href="#/hello/sveltes" text="Say Hi!" />
-      <SideNavMenu text="Menu">
+      <SideNavLink icon={Dashboard} href="#/" text="Dashboard" />
+      <!-- <SideNavLink href="#/hello/sveltes" text="Say Hi!" /> -->
+      <SideNavMenu icon={IbmConsultingAdvantageAssistant} text="Pendaftaran">
+		<SideNavMenuItem href="#/" text="Data Pasien" />
+      
+      <!--
         <SideNavMenuItem href="#/wild/card" text="Wild Card" />
         <SideNavMenuItem href="/" text="Link 2" />
         <SideNavMenuItem href="/" text="Link 3" />
+      -->
       </SideNavMenu>
     {:else}
       <SideNavLink icon={Locked} text="Akses dikunci" />

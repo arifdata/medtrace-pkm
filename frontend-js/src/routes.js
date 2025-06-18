@@ -1,5 +1,5 @@
 // Components
-import Home from './routes/Home.svelte'
+import DashboardPage from './routes/DashboardPage.svelte'
 import Name from './routes/Name.svelte'
 import Wild from './routes/Wild.svelte'
 import NotFound from './routes/NotFound.svelte'
@@ -7,7 +7,7 @@ import NotFound from './routes/NotFound.svelte'
 // Export the route definition object
 export default {
     // Exact path
-    '/': Home,
+    '/': DashboardPage,
 
     // Using named parameters, with last being optional
     '/hello/:first/:last?': Name,
