@@ -1,5 +1,6 @@
 // Components
 import DashboardPage from './routes/DashboardPage.svelte'
+import DataPasienPage from './routes/DataPasienPage.svelte'
 import Name from './routes/Name.svelte'
 import Wild from './routes/Wild.svelte'
 import NotFound from './routes/NotFound.svelte'
@@ -8,6 +9,8 @@ import NotFound from './routes/NotFound.svelte'
 export default {
     // Exact path
     '/': DashboardPage,
+
+    '/data_pasien': DataPasienPage,
 
     // Using named parameters, with last being optional
     '/hello/:first/:last?': Name,
