@@ -15,6 +15,7 @@
     "vite": "^6.3.5"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.8.0",
     "carbon-components-svelte": "^0.89.4",
     "carbon-icons-svelte": "^13.4.0",
     "pocketbase": "^0.26.1",
