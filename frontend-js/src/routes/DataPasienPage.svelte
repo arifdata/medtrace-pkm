@@ -34,13 +34,11 @@
     return `${dt1.format("D MMMM YYYY")} (${usiaTahun} th ${usiaBulan} bl)`;
   }
 
-  //function tarik data dari pocketbase berdasarkan halaman
-  async function listPasien(halaman) {
-    const resultList = await client
-      .collection("data_pasien")
-      .getList(halaman, 10, {
-        sort: "nama_pasien", //bisa juga -nama_pasien
-      });
+  //tarik seluruh data pasien dari pocketbase
+  async function listFullPasien() {
+    const resultList = await client.collection("data_pasien").getFullList({
+      sort: "nama_pasien", //bisa juga -nama_pasien
+    });
     return resultList;
   }
 
@@ -65,13 +63,13 @@
     Column,
     Row,
     SkeletonText,
-    Button,
     Pagination,
     DataTable,
   } from "carbon-components-svelte";
 
-  let indeksPage = 1;
-  let promiseListPasien = listPasien(indeksPage);
+  let promiseListPasien = listFullPasien();
+  let pageSize = 10;
+  let page = 1;
 </script>
 
 <Grid>
@@ -79,12 +77,7 @@
     <Column><h4>Data Pasien</h4></Column>
 
     <Column>
-      <Button
-        size="small"
-        icon={Add}
-        iconDescription="Tambah Data"
-        on:click={generateDataPasien}
-      />
+      <button on:click={generateDataPasien}>Fake Data</button>
     </Column>
   </Row>
 </Grid>
@@ -92,9 +85,10 @@
 {#await promiseListPasien}
   <SkeletonText />
 {:then val}
-  {#if val["totalItems"] != 0}
+  {#if val.length > 0}
     <DataTable
-      size="medium"
+      sortable
+      size="short"
       zebra
       headers={[
         { key: "nama-pasien", value: "Nama Pasien" },
@@ -103,21 +97,15 @@
         { key: "usia", value: "Tanggal Lahir" },
         { key: "no-hp", value: "Nomor Telepon" },
       ]}
-      rows={generateRowTablePasien(val["items"])}
+      rows={generateRowTablePasien(val)}
+      {page}
+      {pageSize}
     />
     <Pagination
-      pageInputDisabled
-      pageSizeInputDisabled
-      totalItems={val["totalItems"]}
-      page={indeksPage}
-      on:click:button--next={() => {
-        indeksPage += 1;
-        promiseListPasien = listPasien(indeksPage);
-      }}
-      on:click:button--previous={() => {
-        indeksPage -= 1;
-        promiseListPasien = listPasien(indeksPage);
-      }}
+      bind:pageSize
+      bind:page
+      totalItems={val.length}
+      pageSizes={[10, 15, 20]}
     />
   {:else}
     <p>Belum ada data pasien</p>
