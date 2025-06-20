@@ -66,7 +66,7 @@
     Row,
     SkeletonText,
     Button,
-    ButtonSet,
+    Pagination,
     DataTable,
   } from "carbon-components-svelte";
 
@@ -77,39 +77,13 @@
 <Grid>
   <Row>
     <Column><h4>Data Pasien</h4></Column>
-    <Column></Column>
-    <Column></Column>
-    <Column></Column>
-    <Column></Column>
+
     <Column>
       <Button
         size="small"
         icon={Add}
         iconDescription="Tambah Data"
         on:click={generateDataPasien}
-      />
-      <Button
-        size="small"
-        icon={PreviousFilled}
-        iconDescription="Mundur"
-        on:click={() => {
-          indeksPage -= 1;
-          if (indeksPage < 1) {
-            indeksPage = 1;
-            promiseListPasien = listPasien(indeksPage);
-          } else {
-            promiseListPasien = listPasien(indeksPage);
-          }
-        }}
-      />
-      <Button
-        size="small"
-        icon={NextFilled}
-        iconDescription="Maju"
-        on:click={() => {
-          indeksPage += 1;
-          promiseListPasien = listPasien(indeksPage);
-        }}
       />
     </Column>
   </Row>
@@ -120,6 +94,7 @@
 {:then val}
   {#if val["totalItems"] != 0}
     <DataTable
+      size="medium"
       zebra
       headers={[
         { key: "nama-pasien", value: "Nama Pasien" },
@@ -129,6 +104,20 @@
         { key: "no-hp", value: "Nomor Telepon" },
       ]}
       rows={generateRowTablePasien(val["items"])}
+    />
+    <Pagination
+      pageInputDisabled
+      pageSizeInputDisabled
+      totalItems={val["totalItems"]}
+      page={indeksPage}
+      on:click:button--next={() => {
+        indeksPage += 1;
+        promiseListPasien = listPasien(indeksPage);
+      }}
+      on:click:button--previous={() => {
+        indeksPage -= 1;
+        promiseListPasien = listPasien(indeksPage);
+      }}
     />
   {:else}
     <p>Belum ada data pasien</p>
