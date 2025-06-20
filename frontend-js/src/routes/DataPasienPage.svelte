@@ -16,13 +16,30 @@
   }
 
   async function listPasien() {
-    const resultList = await client.collection("data_pasien").getList(1, 50, {
+    const resultList = await client.collection("data_pasien").getList(1, 10, {
       sort: "nama_pasien", //bisa juga -nama_pasien
     });
     return resultList;
   }
 
-  import { SkeletonText, Button } from "carbon-components-svelte";
+  function generateRowTablePasien(data){
+    let rowData = [];
+    for (let i = 0; i < data.length; i++) {
+      rowData.push(
+      {
+        "id": data[i].id,
+        "nama-pasien": data[i].nama_pasien,
+        "nomor-kartu": data[i].nomor_kartu,
+        "alamat": data[i].alamat,
+        "usia": data[i].tanggal_lahir, 
+        "no-hp": data[i].nomor_telepon,
+      }
+      );
+    }
+    return rowData;
+  }
+
+  import { SkeletonText, Button, DataTable } from "carbon-components-svelte";
 </script>
 
 <h4>Data Pasien</h4>
@@ -32,9 +49,18 @@
   <SkeletonText />
 {:then val}
   {#if val["totalItems"] != 0}
-    {#each val["items"] as data}
-      {data.nama_pasien}<br />
-    {/each}
+
+<DataTable
+  zebra
+  headers={[
+        { key: "nama-pasien", value: "Nama Pasien" },
+        { key: "nomor-kartu", value: "Nomor Kartu" },
+        { key: "alamat", value: "Alamat" },
+        { key: "usia", value: "Usia" },
+        { key: "no-hp", value: "Nomor Telepon" },
+      ]}
+  rows={generateRowTablePasien(val["items"])}
+  />
   {:else}
     <p>Belum ada data pasien</p>
   {/if}
