@@ -1,9 +1,14 @@
 <script>
   import client from "../pb/client";
   import { fakerID_ID as faker } from "@faker-js/faker";
+  import dayjs from "dayjs";
+  import "dayjs/locale/id";
+  dayjs.locale("id");
+
   // some icons
   import { Add, NextFilled, PreviousFilled } from "carbon-icons-svelte";
 
+  // function untuk generate fake data
   async function generateDataPasien() {
     // example create data
     const data = {
@@ -20,6 +25,16 @@
       .then((data) => alert(data["nama_pasien"]));
   }
 
+  //function untuk menghitung usia
+  function hitungUsia(tanggalLahir) {
+    let dt1 = dayjs(tanggalLahir);
+    let dt2 = dayjs();
+    let usiaTahun = dt2.diff(dt1, "year");
+    let usiaBulan = dt2.diff(dt1, "month") % 12;
+    return `${dt1.format("D MMMM YYYY")} (${usiaTahun} th ${usiaBulan} bl)`;
+  }
+
+  //function tarik data dari pocketbase berdasarkan halaman
   async function listPasien(halaman) {
     const resultList = await client
       .collection("data_pasien")
@@ -29,6 +44,7 @@
     return resultList;
   }
 
+  // function untuk generate rowdata untuk komponen DataTable
   function generateRowTablePasien(data) {
     let rowData = [];
     for (let i = 0; i < data.length; i++) {
@@ -37,7 +53,7 @@
         "nama-pasien": data[i].nama_pasien,
         "nomor-kartu": data[i].nomor_kartu,
         alamat: data[i].alamat,
-        usia: data[i].tanggal_lahir,
+        usia: hitungUsia(data[i].tanggal_lahir),
         "no-hp": data[i].nomor_telepon,
       });
     }
@@ -109,7 +125,7 @@
         { key: "nama-pasien", value: "Nama Pasien" },
         { key: "nomor-kartu", value: "Nomor Kartu" },
         { key: "alamat", value: "Alamat" },
-        { key: "usia", value: "Usia" },
+        { key: "usia", value: "Tanggal Lahir" },
         { key: "no-hp", value: "Nomor Telepon" },
       ]}
       rows={generateRowTablePasien(val["items"])}

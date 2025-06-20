@@ -18,6 +18,7 @@
     "@faker-js/faker": "^9.8.0",
     "carbon-components-svelte": "^0.89.4",
     "carbon-icons-svelte": "^13.4.0",
+    "dayjs": "^1.11.13",
     "pocketbase": "^0.26.1",
     "svelte-spa-router": "^4.0.1",
     "toastify-js": "^1.12.0"
