@@ -85,6 +85,7 @@
     Toolbar,
     ToolbarContent,
     ToolbarSearch,
+    Button,
   } from "carbon-components-svelte";
 
   let promiseListPasien = listFullPasien();
@@ -94,14 +95,7 @@
 
 <Grid>
   <Row>
-    <Column><h4>Data Pasien</h4></Column>
-
     <Column>
-      <button
-        on:click={() => {
-          generateBanyakDataPasien(500);
-        }}>Generate 500 Fake Data</button
-      >
       <!-- <button on:click={generateDataPasien}>Fake Data</button> -->
     </Column>
   </Row>
@@ -112,6 +106,7 @@
 {:then val}
   {#if val.length > 0}
     <DataTable
+      title="Data Pasien"
       sortable
       size="short"
       zebra
@@ -127,7 +122,7 @@
       {page}
       {pageSize}
     >
-      <Toolbar>
+      <Toolbar size="sm">
         <ToolbarContent>
           <ToolbarSearch persistent shouldFilterRows />
         </ToolbarContent>
@@ -145,3 +140,8 @@
 {:catch error}
   Login untuk akses halaman ini.
 {/await}
+<button
+  on:click={() => {
+    generateBanyakDataPasien(500);
+  }}>Generate 500 Fake Data</button
+>
