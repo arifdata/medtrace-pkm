@@ -19,10 +19,14 @@
       nomor_telepon: faker.phone.number(),
     };
 
-    const record = await client
-      .collection("data_pasien")
-      .create(data)
-      .then((data) => alert(data["nama_pasien"]));
+    try {
+      const record = await client
+        .collection("data_pasien")
+        .create(data)
+        .then((data) => alert(data["nama_pasien"]));
+    } catch (e) {
+      alert(e);
+    }
   }
 
   //function untuk menghitung usia
