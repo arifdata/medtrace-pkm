@@ -23,10 +23,22 @@
       const record = await client
         .collection("data_pasien")
         .create(data)
-        .then((data) => alert(data["nama_pasien"]));
+        .then((data) => console.log(data["nama_pasien"]));
     } catch (e) {
-      alert(e);
+      console.log(e);
     }
+  }
+
+  function generateBanyakDataPasien(number) {
+    for (let i = 0; i < number; i++) {
+      generateDataPasien();
+    }
+  }
+
+  //function untuk menampilan tanggal lahir dengan enak dibaca
+  function rapikanTanggalLahir(tanggalLahir) {
+    let dt = dayjs(tanggalLahir);
+    return dt.format("DD MMMM YYYY");
   }
 
   //function untuk menghitung usia
@@ -35,7 +47,7 @@
     let dt2 = dayjs();
     let usiaTahun = dt2.diff(dt1, "year");
     let usiaBulan = dt2.diff(dt1, "month") % 12;
-    return `${dt1.format("D MMMM YYYY")} (${usiaTahun} th ${usiaBulan} bl)`;
+    return `${usiaTahun} tahun ${usiaBulan} bulan`;
   }
 
   //tarik seluruh data pasien dari pocketbase
@@ -55,6 +67,7 @@
         "nama-pasien": data[i].nama_pasien,
         "nomor-kartu": data[i].nomor_kartu,
         alamat: data[i].alamat,
+        "tgl-lahir": rapikanTanggalLahir(data[i].tanggal_lahir),
         usia: hitungUsia(data[i].tanggal_lahir),
         "no-hp": data[i].nomor_telepon,
       });
@@ -72,7 +85,7 @@
   } from "carbon-components-svelte";
 
   let promiseListPasien = listFullPasien();
-  let pageSize = 10;
+  let pageSize = 15;
   let page = 1;
 </script>
 
@@ -81,7 +94,12 @@
     <Column><h4>Data Pasien</h4></Column>
 
     <Column>
-      <button on:click={generateDataPasien}>Fake Data</button>
+      <button
+        on:click={() => {
+          generateBanyakDataPasien(500);
+        }}>Generate 500 Fake Data</button
+      >
+      <!-- <button on:click={generateDataPasien}>Fake Data</button> -->
     </Column>
   </Row>
 </Grid>
@@ -98,7 +116,8 @@
         { key: "nama-pasien", value: "Nama Pasien" },
         { key: "nomor-kartu", value: "Nomor Kartu" },
         { key: "alamat", value: "Alamat" },
-        { key: "usia", value: "Tanggal Lahir" },
+        { key: "tgl-lahir", value: "Tanggal Lahir" },
+        { key: "usia", value: "Usia" },
         { key: "no-hp", value: "Nomor Telepon" },
       ]}
       rows={generateRowTablePasien(val)}
@@ -109,7 +128,7 @@
       bind:pageSize
       bind:page
       totalItems={val.length}
-      pageSizes={[10, 15, 20]}
+      pageSizes={[15, 20]}
     />
   {:else}
     <p>Belum ada data pasien</p>
