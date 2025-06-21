@@ -82,6 +82,9 @@
     SkeletonText,
     Pagination,
     DataTable,
+    Toolbar,
+    ToolbarContent,
+    ToolbarSearch,
   } from "carbon-components-svelte";
 
   let promiseListPasien = listFullPasien();
@@ -123,7 +126,13 @@
       rows={generateRowTablePasien(val)}
       {page}
       {pageSize}
-    />
+    >
+      <Toolbar>
+        <ToolbarContent>
+          <ToolbarSearch persistent shouldFilterRows />
+        </ToolbarContent>
+      </Toolbar>
+    </DataTable>
     <Pagination
       bind:pageSize
       bind:page
