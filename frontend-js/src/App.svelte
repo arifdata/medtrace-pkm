@@ -19,6 +19,7 @@
     TextInput,
     PasswordInput,
     Theme,
+    InlineNotification,
   } from "carbon-components-svelte";
   let isSideNavOpen = true;
 
@@ -30,12 +31,11 @@
   import Router from "svelte-spa-router";
   import routes from "./routes";
 
-  import {client} from "./pb/client";
+  import { client, isLoggedIn } from "./pb/client";
 
   let email = localStorage.getItem("__tmp-email") ?? "";
   let password = localStorage.getItem("__tmp-password") ?? "";
 
-  let isLoggedIn = client.authStore.isValid;
   let open = false;
 
   async function login() {
@@ -52,7 +52,6 @@
               background: "#42be65",
             },
           }).showToast();
-          isLoggedIn = client.authStore.isValid;
         });
     } catch (e) {
       Toastify({
@@ -68,7 +67,6 @@
 
   function logout() {
     client.authStore.clear();
-    isLoggedIn = client.authStore.isValid;
     Toastify({
       text: "Berhasil log out",
       duration: 3000,
@@ -124,7 +122,7 @@
       />
     {/if}
 
-    {#if isLoggedIn}
+    {#if $isLoggedIn}
       <HeaderGlobalAction
         iconDescription={client.authStore.model.email}
         tooltipAlignment="end"
@@ -180,13 +178,13 @@
 
 <SideNav bind:isOpen={isSideNavOpen}>
   <SideNavItems>
-    {#if isLoggedIn}
+    {#if $isLoggedIn}
       <SideNavLink icon={Dashboard} href="#/" text="Dashboard" />
       <!-- <SideNavLink href="#/hello/sveltes" text="Say Hi!" /> -->
       <SideNavMenu icon={IbmConsultingAdvantageAssistant} text="Pendaftaran">
-		<SideNavMenuItem href="#/data_pasien" text="Data Pasien" />
-      
-      <!--
+        <SideNavMenuItem href="#/data_pasien" text="Data Pasien" />
+
+        <!--
         <SideNavMenuItem href="#/wild/card" text="Wild Card" />
         <SideNavMenuItem href="/" text="Link 2" />
         <SideNavMenuItem href="/" text="Link 3" />
@@ -196,10 +194,23 @@
       <SideNavLink icon={Locked} text="Akses dikunci" />
     {/if}
     <SideNavDivider />
-    <SideNavLink icon={Notebook} href="https://github.com/arifdata/medtrace-pkm" text="Buku Panduan" />
+    <SideNavLink
+      icon={Notebook}
+      href="https://github.com/arifdata/medtrace-pkm"
+      text="Buku Panduan"
+    />
   </SideNavItems>
 </SideNav>
 
 <Content>
-  <Router {routes} />
+  {#if $isLoggedIn}
+    <Router {routes} />
+  {:else}
+    <InlineNotification
+      title="Error:"
+      subtitle="Login untuk mengakses halaman ini."
+      lowContrast
+      hideCloseButton
+    />
+  {/if}
 </Content>
