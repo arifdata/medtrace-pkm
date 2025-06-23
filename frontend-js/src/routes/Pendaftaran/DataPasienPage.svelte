@@ -1,12 +1,12 @@
 <script>
-  import {client} from "../pb/client";
+  import { client } from "../../pb/client";
   import { fakerID_ID as faker } from "@faker-js/faker";
   import dayjs from "dayjs";
   import "dayjs/locale/id";
   dayjs.locale("id");
 
   // some icons
-  import { Add, Renew} from "carbon-icons-svelte";
+  import { Add, Renew } from "carbon-icons-svelte";
 
   // function untuk generate fake data
   async function generateDataPasien() {
@@ -76,9 +76,6 @@
   }
 
   import {
-    Grid,
-    Column,
-    Row,
     DataTableSkeleton,
     InlineNotification,
     Pagination,
@@ -87,6 +84,7 @@
     ToolbarContent,
     ToolbarSearch,
     Button,
+    Link,
   } from "carbon-components-svelte";
 
   let promiseListPasien = listFullPasien();
@@ -95,7 +93,19 @@
 </script>
 
 {#await promiseListPasien}
-     <DataTableSkeleton size="short" zebra headers={["Nama Pasien", "Nomor Kartu", "Alamat", "Tanggal Lahir", "Usia", "Nomor Telepon"]} rows={20} />
+  <DataTableSkeleton
+    size="short"
+    zebra
+    headers={[
+      "Nama Pasien",
+      "Nomor Kartu",
+      "Alamat",
+      "Tanggal Lahir",
+      "Usia",
+      "Nomor Telepon",
+    ]}
+    rows={20}
+  />
 {:then val}
   {#if val.length > 0}
     <DataTable
@@ -104,13 +114,14 @@
       size="short"
       zebra
       expandable
+      stickyHeader
       headers={[
         { key: "nama-pasien", value: "Nama Pasien" },
         { key: "nomor-kartu", value: "Nomor Kartu" },
         { key: "alamat", value: "Alamat" },
-        { key: "tgl-lahir", value: "Tanggal Lahir" },
+        //{ key: "tgl-lahir", value: "Tanggal Lahir" },
         { key: "usia", value: "Usia" },
-        { key: "no-hp", value: "Nomor Telepon" },
+        //{ key: "no-hp", value: "Nomor Telepon" },
       ]}
       rows={generateRowTablePasien(val)}
       {page}
@@ -128,10 +139,25 @@
             icon={Renew}
             on:click={() => {
               promiseListPasien = listFullPasien();
-            }}
-          >Refresh</Button>
+            }}>Refresh</Button
+          >
         </ToolbarContent>
       </Toolbar>
+      <svelte:fragment slot="expanded-row" let:row>
+        <pre>Tanggal lahir: {row["tgl-lahir"]}</pre>
+        <pre>Nomor telepon: {row["no-hp"]}</pre>
+      </svelte:fragment>
+      <svelte:fragment slot="cell" let:row let:cell>
+        {#if cell.key === "rule"}
+          <Link
+            icon={Launch}
+            href="https://en.wikipedia.org/wiki/Round-robin_DNS"
+            target="_blank">{cell.value}</Link
+          >
+        {:else}
+          {cell.value}
+        {/if}
+      </svelte:fragment>
     </DataTable>
     <Pagination
       bind:pageSize
@@ -140,7 +166,7 @@
       pageSizes={[20, 35, 50]}
     />
   {:else}
-<DataTable
+    <DataTable
       title="Data Pasien"
       description="Belum ada data pasien."
       size="short"
@@ -150,9 +176,9 @@
         { key: "nama-pasien", value: "Nama Pasien" },
         { key: "nomor-kartu", value: "Nomor Kartu" },
         { key: "alamat", value: "Alamat" },
-        { key: "tgl-lahir", value: "Tanggal Lahir" },
+        //{ key: "tgl-lahir", value: "Tanggal Lahir" },
         { key: "usia", value: "Usia" },
-        { key: "no-hp", value: "Nomor Telepon" },
+        //{ key: "no-hp", value: "Nomor Telepon" },
       ]}
       rows={[]}
       {page}
@@ -160,14 +186,14 @@
     >
       <Toolbar size="sm">
         <ToolbarContent>
-          <ToolbarSearch persistent/>
+          <ToolbarSearch persistent />
           <Button icon={Add}>Tambah Data</Button>
           <Button
             icon={Renew}
             on:click={() => {
               promiseListPasien = listFullPasien();
-            }}
-          >Refresh</Button>
+            }}>Refresh</Button
+          >
         </ToolbarContent>
       </Toolbar>
     </DataTable>
@@ -192,4 +218,3 @@
 <!--     generateBanyakDataPasien(500); -->
 <!--   }}>Generate 500 Fake Data</button -->
 <!-- > -->
-
