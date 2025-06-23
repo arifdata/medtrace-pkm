@@ -93,9 +93,6 @@
   let page = 1;
 </script>
 
-<Grid>
-  <Row>
-    <Column>
 {#await promiseListPasien}
   <SkeletonText />
 {:then val}
@@ -103,7 +100,7 @@
     <DataTable
       title="Data Pasien"
       sortable
-      size="compact"
+      size="short"
       zebra
       expandable
       headers={[
@@ -140,16 +137,10 @@
 {:catch error}
   Login untuk akses halaman ini.
 {/await}
-    </Column>
-  </Row>
-    <Row>
-    <Column>
-<button
-  on:click={() => {
-    generateBanyakDataPasien(500);
-  }}>Generate 500 Fake Data</button
->
-    </Column>
-    </Row>
-</Grid>
+
+<!-- <button -->
+<!--   on:click={() => { -->
+<!--     generateBanyakDataPasien(500); -->
+<!--   }}>Generate 500 Fake Data</button -->
+<!-- > -->
 

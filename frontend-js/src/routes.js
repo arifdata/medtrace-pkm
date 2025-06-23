@@ -1,6 +1,7 @@
 // Components
 import DashboardPage from './routes/DashboardPage.svelte'
 import DataPasienPage from './routes/DataPasienPage.svelte'
+import PasienDetailPage from './routes/PasienDetailPage.svelte'
 import Name from './routes/Name.svelte'
 import Wild from './routes/Wild.svelte'
 import NotFound from './routes/NotFound.svelte'
@@ -11,6 +12,7 @@ export default {
     '/': DashboardPage,
 
     '/data_pasien': DataPasienPage,
+    '/data_pasien/:id': PasienDetailPage,
 
     // Using named parameters, with last being optional
     '/hello/:first/:last?': Name,
