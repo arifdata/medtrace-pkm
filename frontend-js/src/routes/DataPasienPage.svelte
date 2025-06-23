@@ -89,18 +89,13 @@
   } from "carbon-components-svelte";
 
   let promiseListPasien = listFullPasien();
-  let pageSize = 15;
+  let pageSize = 20;
   let page = 1;
 </script>
 
 <Grid>
   <Row>
     <Column>
-      <!-- <button on:click={generateDataPasien}>Fake Data</button> -->
-    </Column>
-  </Row>
-</Grid>
-
 {#await promiseListPasien}
   <SkeletonText />
 {:then val}
@@ -108,8 +103,9 @@
     <DataTable
       title="Data Pasien"
       sortable
-      size="short"
+      size="compact"
       zebra
+      expandable
       headers={[
         { key: "nama-pasien", value: "Nama Pasien" },
         { key: "nomor-kartu", value: "Nomor Kartu" },
@@ -121,6 +117,10 @@
       rows={generateRowTablePasien(val)}
       {page}
       {pageSize}
+      on:click:row={(data) => {
+        // console.log(data["detail"]);
+        window.open(`#/data_pasien/${data["detail"]["id"]}`, "_blank").focus();
+      }}
     >
       <Toolbar size="sm">
         <ToolbarContent>
@@ -132,7 +132,7 @@
       bind:pageSize
       bind:page
       totalItems={val.length}
-      pageSizes={[15, 20]}
+      pageSizes={[20, 35, 50]}
     />
   {:else}
     <p>Belum ada data pasien</p>
@@ -140,8 +140,16 @@
 {:catch error}
   Login untuk akses halaman ini.
 {/await}
+    </Column>
+  </Row>
+    <Row>
+    <Column>
 <button
   on:click={() => {
     generateBanyakDataPasien(500);
   }}>Generate 500 Fake Data</button
 >
+    </Column>
+    </Row>
+</Grid>
+
