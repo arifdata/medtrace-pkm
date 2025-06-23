@@ -30,7 +30,7 @@
   import Router from "svelte-spa-router";
   import routes from "./routes";
 
-  import client from "./pb/client";
+  import {client} from "./pb/client";
 
   let email = localStorage.getItem("__tmp-email") ?? "";
   let password = localStorage.getItem("__tmp-password") ?? "";

@@ -1,5 +1,5 @@
 <script>
-  import client from "../pb/client";
+  import {client} from "../pb/client";
   import { fakerID_ID as faker } from "@faker-js/faker";
   import dayjs from "dayjs";
   import "dayjs/locale/id";
