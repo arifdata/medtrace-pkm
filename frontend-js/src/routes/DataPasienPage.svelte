@@ -6,7 +6,7 @@
   dayjs.locale("id");
 
   // some icons
-  import { Add, NextFilled, PreviousFilled } from "carbon-icons-svelte";
+  import { Add, Renew} from "carbon-icons-svelte";
 
   // function untuk generate fake data
   async function generateDataPasien() {
@@ -79,7 +79,8 @@
     Grid,
     Column,
     Row,
-    SkeletonText,
+    DataTableSkeleton,
+    InlineNotification,
     Pagination,
     DataTable,
     Toolbar,
@@ -94,7 +95,7 @@
 </script>
 
 {#await promiseListPasien}
-  <SkeletonText />
+     <DataTableSkeleton size="short" zebra headers={["Nama Pasien", "Nomor Kartu", "Alamat", "Tanggal Lahir", "Usia", "Nomor Telepon"]} rows={20} />
 {:then val}
   {#if val.length > 0}
     <DataTable
@@ -122,6 +123,13 @@
       <Toolbar size="sm">
         <ToolbarContent>
           <ToolbarSearch persistent shouldFilterRows />
+          <Button icon={Add}>Tambah Data</Button>
+          <Button
+            icon={Renew}
+            on:click={() => {
+              promiseListPasien = listFullPasien();
+            }}
+          >Refresh</Button>
         </ToolbarContent>
       </Toolbar>
     </DataTable>
@@ -132,10 +140,51 @@
       pageSizes={[20, 35, 50]}
     />
   {:else}
-    <p>Belum ada data pasien</p>
+<DataTable
+      title="Data Pasien"
+      description="Belum ada data pasien."
+      size="short"
+      zebra
+      expandable
+      headers={[
+        { key: "nama-pasien", value: "Nama Pasien" },
+        { key: "nomor-kartu", value: "Nomor Kartu" },
+        { key: "alamat", value: "Alamat" },
+        { key: "tgl-lahir", value: "Tanggal Lahir" },
+        { key: "usia", value: "Usia" },
+        { key: "no-hp", value: "Nomor Telepon" },
+      ]}
+      rows={[]}
+      {page}
+      {pageSize}
+    >
+      <Toolbar size="sm">
+        <ToolbarContent>
+          <ToolbarSearch persistent/>
+          <Button icon={Add}>Tambah Data</Button>
+          <Button
+            icon={Renew}
+            on:click={() => {
+              promiseListPasien = listFullPasien();
+            }}
+          >Refresh</Button>
+        </ToolbarContent>
+      </Toolbar>
+    </DataTable>
+    <Pagination
+      bind:pageSize
+      bind:page
+      totalItems={0}
+      pageSizes={[20, 35, 50]}
+    />
   {/if}
 {:catch error}
-  Login untuk akses halaman ini.
+  <InlineNotification
+    title="Error:"
+    subtitle={error}
+    lowContrast
+    hideCloseButton
+  />
 {/await}
 
 <!-- <button -->
