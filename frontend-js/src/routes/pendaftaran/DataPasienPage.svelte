@@ -126,15 +126,15 @@
       rows={generateRowTablePasien(val)}
       {page}
       {pageSize}
-      on:click:row={(data) => {
-        // console.log(data["detail"]);
-        window.open(`#/data_pasien/${data["detail"]["id"]}`, "_blank").focus();
-      }}
     >
       <Toolbar size="sm">
         <ToolbarContent>
           <ToolbarSearch persistent shouldFilterRows />
-          <Button icon={Add}>Tambah Data</Button>
+          <Button
+            icon={Add}
+            href="#/asdasd"
+            target="_blank"
+          >Tambah Data</Button>
           <Button
             icon={Renew}
             on:click={() => {
@@ -148,12 +148,10 @@
         <pre>Nomor telepon: {row["no-hp"]}</pre>
       </svelte:fragment>
       <svelte:fragment slot="cell" let:row let:cell>
-        {#if cell.key === "rule"}
+        {#if cell.key === "nama-pasien"}
           <Link
-            icon={Launch}
-            href="https://en.wikipedia.org/wiki/Round-robin_DNS"
-            target="_blank">{cell.value}</Link
-          >
+            href={`#/data_pasien/${row['id']}`}
+            target="_blank">{cell.value}</Link>
         {:else}
           {cell.value}
         {/if}
