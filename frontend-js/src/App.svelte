@@ -21,7 +21,6 @@
     Theme,
     InlineNotification,
   } from "carbon-components-svelte";
-  let isSideNavOpen = true;
 
   //theme switcher data
   let theme = localStorage.getItem("__carbon-theme") ?? "g10"; //check if get null value set as g10 (light theme)
@@ -89,11 +88,17 @@
     Dashboard,
     IbmConsultingAdvantageAssistant,
   } from "carbon-icons-svelte";
+  let isSideNavOpen = false;
 </script>
 
 <Theme bind:theme persist persistKey="__carbon-theme" />
 
-<Header company="MedTrace PKM" platformName="v.0.0.1" bind:isSideNavOpen>
+<Header
+  company="MedTrace PKM"
+  platformName="v.0.0.1"
+  bind:isSideNavOpen
+  persistentHamburgerMenu={true}
+>
   <svelte:fragment slot="skip-to-content">
     <SkipToContent />
   </svelte:fragment>
