@@ -1,7 +1,7 @@
 // Components
 import DashboardPage from './routes/DashboardPage.svelte'
-import DataPasienPage from './routes/Pendaftaran/DataPasienPage.svelte'
-import PasienDetailPage from './routes/Pendaftaran/PasienDetailPage.svelte'
+import DataPasienPage from './routes/pendaftaran/DataPasienPage.svelte'
+import PasienDetailPage from './routes/pendaftaran/PasienDetailPage.svelte'
 import Name from './routes/Name.svelte'
 import Wild from './routes/Wild.svelte'
 import NotFound from './routes/NotFound.svelte'
