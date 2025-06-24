@@ -97,14 +97,11 @@
     size="short"
     zebra
     headers={[
-      "Nama Pasien",
-      "Nomor Kartu",
+      "Nama",
       "Alamat",
-      "Tanggal Lahir",
       "Usia",
-      "Nomor Telepon",
     ]}
-    rows={20}
+    rows={10}
   />
 {:then val}
   {#if val.length > 0}
@@ -116,8 +113,8 @@
       expandable
       stickyHeader
       headers={[
-        { key: "nama-pasien", value: "Nama Pasien" },
-        { key: "nomor-kartu", value: "Nomor Kartu" },
+        { key: "nama-pasien", value: "Nama" },
+        // { key: "nomor-kartu", value: "Nomor Kartu" },
         { key: "alamat", value: "Alamat" },
         //{ key: "tgl-lahir", value: "Tanggal Lahir" },
         { key: "usia", value: "Usia" },
@@ -132,7 +129,7 @@
           <ToolbarSearch persistent shouldFilterRows />
           <Button
             icon={Add}
-            href="#/asdasd"
+            href="#/data_pasien/tambah"
             target="_blank"
           >Tambah Data</Button>
           <Button
@@ -144,13 +141,14 @@
         </ToolbarContent>
       </Toolbar>
       <svelte:fragment slot="expanded-row" let:row>
+        <pre>Nomor Kartu: {row["nomor-kartu"]}</pre>
         <pre>Tanggal lahir: {row["tgl-lahir"]}</pre>
         <pre>Nomor telepon: {row["no-hp"]}</pre>
       </svelte:fragment>
       <svelte:fragment slot="cell" let:row let:cell>
         {#if cell.key === "nama-pasien"}
           <Link
-            href={`#/data_pasien/${row['id']}`}
+            href={`#/data_pasien/detail/${row['id']}`}
             target="_blank">{cell.value}</Link>
         {:else}
           {cell.value}
@@ -172,7 +170,7 @@
       expandable
       headers={[
         { key: "nama-pasien", value: "Nama Pasien" },
-        { key: "nomor-kartu", value: "Nomor Kartu" },
+        // { key: "nomor-kartu", value: "Nomor Kartu" },
         { key: "alamat", value: "Alamat" },
         //{ key: "tgl-lahir", value: "Tanggal Lahir" },
         { key: "usia", value: "Usia" },

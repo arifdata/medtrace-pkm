@@ -1,7 +1,12 @@
-// Components
+// Route Dashboard
 import DashboardPage from './routes/DashboardPage.svelte'
+
+// Route Pendaftaran
 import DataPasienPage from './routes/pendaftaran/DataPasienPage.svelte'
 import PasienDetailPage from './routes/pendaftaran/PasienDetailPage.svelte'
+import TambahPasienPage from './routes/pendaftaran/TambahPasienPage.svelte'
+
+// Example routes
 import Name from './routes/Name.svelte'
 import Wild from './routes/Wild.svelte'
 import NotFound from './routes/NotFound.svelte'
@@ -12,7 +17,8 @@ export default {
     '/': DashboardPage,
 
     '/data_pasien': DataPasienPage,
-    '/data_pasien/:id': PasienDetailPage,
+    '/data_pasien/detail/:id': PasienDetailPage,
+    '/data_pasien/tambah': TambahPasienPage,
 
     // Using named parameters, with last being optional
     '/hello/:first/:last?': Name,
