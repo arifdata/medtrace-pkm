@@ -1,13 +1,21 @@
 <script>
-  import { TextInput } from "carbon-components-svelte";
+  import { TextInput, Button, DatePicker, DatePickerInput } from "carbon-components-svelte";
   let namaPasienInput = {value: ""};
   let nomorKartu = "";
   let alamatInput = {value: ""};
+  let tgl;
 
 
 </script>
 
 <h4>Tambah pasien</h4>
+
+
+<Button
+  on:click={() => {
+    console.log(tgl);
+  }}
+  >Coba</Button>
 
 <TextInput
   light
@@ -60,3 +68,7 @@
     }
   }}
 />
+
+<DatePicker light datePickerType="single" on:change bind:value={tgl} dateFormat="d-m-Y">
+  <DatePickerInput labelText="Tanggal Lahir" placeholder="mm/dd/yyyy" />
+</DatePicker>
