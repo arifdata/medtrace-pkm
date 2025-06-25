@@ -1,28 +1,9 @@
 <script>
   import { TextInput } from "carbon-components-svelte";
-  let namaPasienInput = {
-    warn: true,
-    warnText: "",
-    value: "",
-  };
-  let alamat = "";
-  let tanggalLahir;
+  let namaPasienInput = {value: ""};
+  let nomorKartu = "";
+  let alamatInput = {value: ""};
 
-  // todo: perbaiki lagi fungsi ini utk dipakai di field yg lain
-  function warningChecker(max_length, inputText, data){
-    if (inputText == "") {
-      data['warnText'] = "Tidak boleh kosong";
-      data['warn'] = true;
-    } else if (inputText.length > max_length) {
-      data['warnText'] = `Maksimal ${max_length} karakter`;
-      data['warn'] = true;
-      data['value'] = inputText;
-    } else {
-      data['warn'] = false;
-      data['value'] = inputText;
-      console.log(data['value']);
-    }
-  }
 
 </script>
 
@@ -30,23 +11,52 @@
 
 <TextInput
   light
+  size="sm"
   warn={namaPasienInput['warn']}
   warnText={namaPasienInput['warnText']}
   labelText="Nama"
   placeholder="Masukkan nama pasien..."
   on:input={(val) => {
     if (val['detail'] == "") {
-      namaPasienInput['warnText'] = "Nama tidak boleh kosong"
+      namaPasienInput['warnText'] = "Nama tidak boleh kosong";
       namaPasienInput['warn'] = true;
-    } else if (val['detail'].length > 10) {
-      namaPasienInput['warnText'] = "Maksimal 10 karakter";
+      namaPasienInput['value'] = val['detail'];
+    } else if (val['detail'].length > 100) {
+      namaPasienInput['warnText'] = "Maksimal 100 karakter";
       namaPasienInput['warn'] = true;
       namaPasienInput['value'] = val['detail'];
     } else {
       namaPasienInput['warn'] = false;
       namaPasienInput['value'] = val['detail'];
-      console.log(namaPasienInput['value']);
     }
   }}
 />
 
+<TextInput
+  size="sm"
+  light
+  labelText="Nomor Kartu"
+  placeholder="Masukkan nomor kartu..."
+  on:input={(val) => {
+    nomorKartu = val['detail'];
+  }}
+/>
+
+<TextInput
+  light
+  size="sm"
+  warn={alamatInput['warn']}
+  warnText={alamatInput['warnText']}
+  labelText="Alamat"
+  placeholder="Masukkan alamat pasien..."
+  on:input={(val) => {
+    if (val['detail'] == "") {
+      alamatInput['warnText'] = "Alamat tidak boleh kosong";
+      alamatInput['warn'] = true;
+      alamatInput['value'] = val['detail'];
+    } else {
+      alamatInput['warn'] = false;
+      alamatInput['value'] = val['detail'];
+    }
+  }}
+/>
