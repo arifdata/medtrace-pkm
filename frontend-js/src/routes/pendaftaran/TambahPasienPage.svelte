@@ -6,6 +6,7 @@
     DatePickerInput,
   } from "carbon-components-svelte";
   import { Indonesian } from "flatpickr/dist/l10n/id.js";
+  import { parseDatePicker } from '../../utils/dateUtils.js';
 
   let namaPasienInput = { value: "" };
   let nomorKartu = "";
@@ -17,7 +18,7 @@
 
 <Button
   on:click={() => {
-    console.log(tgl);
+    console.log(parseDatePicker(tgl));
   }}>Coba</Button
 >
 
