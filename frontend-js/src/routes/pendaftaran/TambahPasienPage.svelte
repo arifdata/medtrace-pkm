@@ -6,19 +6,22 @@
     DatePickerInput,
   } from "carbon-components-svelte";
   import { Indonesian } from "flatpickr/dist/l10n/id.js";
-  import { parseDatePicker } from '../../utils/dateUtils.js';
+  import { parseDatePicker } from '../../utils/dateUtils';
+  import { tambahDataPasien } from '../../utils/crudUtils';
 
   let namaPasienInput = { value: "" };
   let nomorKartu = "";
   let alamatInput = { value: "" };
   let tgl;
+  let nomorTelepon = "";
 </script>
 
 <h4>Tambah pasien</h4>
 
 <Button
   on:click={() => {
-    console.log(parseDatePicker(tgl));
+    // console.log(parseDatePicker(tgl));
+    tambahDataPasien(namaPasienInput['value'], nomorKartu, alamatInput['value'], parseDatePicker(tgl), nomorTelepon);
   }}>Coba</Button
 >
 
@@ -84,3 +87,13 @@
 >
   <DatePickerInput labelText="Tanggal Lahir" placeholder="mm/dd/yyyy" />
 </DatePicker>
+
+<TextInput
+  size="sm"
+  light
+  labelText="Nomor Telepon"
+  placeholder="Masukkan nomor telepon..."
+  on:input={(val) => {
+    nomorTelepon = val["detail"];
+  }}
+/>
