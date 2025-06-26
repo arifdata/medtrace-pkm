@@ -9,19 +9,38 @@
   import { parseDatePicker } from '../../utils/dateUtils';
   import { tambahDataPasien } from '../../utils/crudUtils';
 
+  let buttonIsDisabled = false;
+
   let namaPasienInput = { value: "" };
   let nomorKartu = "";
   let alamatInput = { value: "" };
   let tgl;
   let nomorTelepon = "";
+
+  function clearForm(){
+    namaPasienInput['value'] = "";
+    nomorKartu = "";
+    alamatInput['value'] = "";
+    tgl = "";
+    nomorTelepon = "";
+  }
 </script>
 
 <h4>Tambah pasien</h4>
 
 <Button
+  disabled={buttonIsDisabled}
   on:click={() => {
     // console.log(parseDatePicker(tgl));
-    tambahDataPasien(namaPasienInput['value'], nomorKartu, alamatInput['value'], parseDatePicker(tgl), nomorTelepon);
+    buttonIsDisabled = true;
+    tambahDataPasien(namaPasienInput['value'], nomorKartu, alamatInput['value'], parseDatePicker(tgl), nomorTelepon).then((val) => {
+      if (val) {
+        buttonIsDisabled = false;
+        clearForm();
+      } else {
+        buttonIsDisabled = false;
+      }
+    });
   }}>Coba</Button
 >
 

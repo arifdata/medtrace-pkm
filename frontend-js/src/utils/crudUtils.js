@@ -1,6 +1,6 @@
-import { client } from '../pb/client';
-  import Toastify from "toastify-js";
-  import "toastify-js/src/toastify.css";
+import { client } from '../pb/client'
+  import Toastify from "toastify-js"
+  import "toastify-js/src/toastify.css"
 
 export async function tambahDataPasien(nama, nomor_kartu, alamat, tanggal_lahir, nomor_telepon) {
     // example create data
@@ -23,8 +23,8 @@ export async function tambahDataPasien(nama, nomor_kartu, alamat, tanggal_lahir,
         style: {
           background: "#42be65",
         },
-      }).showToast()
-);
+      }).showToast());
+      return true;
     } catch (e) {
       Toastify({
         text: "Gagal input data.",
@@ -34,6 +34,7 @@ export async function tambahDataPasien(nama, nomor_kartu, alamat, tanggal_lahir,
           background: "#fa4d56",
         },
       }).showToast();
+    return false;
     }
   }
 
