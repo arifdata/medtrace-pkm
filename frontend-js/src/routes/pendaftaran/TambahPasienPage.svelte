@@ -4,115 +4,112 @@
     Button,
     DatePicker,
     DatePickerInput,
+    Form,
   } from "carbon-components-svelte";
   import { Indonesian } from "flatpickr/dist/l10n/id.js";
-  import { parseDatePicker } from '../../utils/dateUtils';
-  import { tambahDataPasien } from '../../utils/crudUtils';
+  import { parseDatePicker } from "../../utils/dateUtils";
+  import { tambahDataPasien } from "../../utils/crudUtils";
 
   let buttonIsDisabled = false;
 
-  let namaPasienInput = { value: "" };
-  let nomorKartu = "";
-  let alamatInput = { value: "" };
-  let tgl;
-  let nomorTelepon = "";
+  let namaPasienInput;
+  let nomorKartuInput;
+  let alamatInput;
+  let tanggalInput;
+  let nomorTeleponInput;
 
-  function clearForm(){
-    namaPasienInput['value'] = "";
-    nomorKartu = "";
-    alamatInput['value'] = "";
-    tgl = "";
-    nomorTelepon = "";
+  let invalidValues = {};
+
+  function clearForm() {
+    namaPasienInput = undefined;
+    nomorKartuInput = undefined;
+    alamatInput = undefined;
+    tanggalInput = undefined;
+    nomorTeleponInput = undefined;
   }
 </script>
 
 <h4>Tambah pasien</h4>
 
-<Button
-  disabled={buttonIsDisabled}
-  on:click={() => {
-    // console.log(parseDatePicker(tgl));
+<Form
+  on:submit={(e) => {
+    e.preventDefault();
     buttonIsDisabled = true;
-    tambahDataPasien(namaPasienInput['value'], nomorKartu, alamatInput['value'], parseDatePicker(tgl), nomorTelepon).then((val) => {
-      if (val) {
-        buttonIsDisabled = false;
-        clearForm();
+    console.log("submit", e);
+    buttonIsDisabled = false;
+  }}
+>
+  <TextInput
+    required
+    light
+    size="sm"
+    invalidText={invalidValues["namaWarnText"]}
+    invalid={invalidValues["namaWarn"]}
+    labelText="Nama"
+    placeholder="Masukkan nama pasien..."
+    bind:value={namaPasienInput}
+    on:input={(val) => {
+      if (val["detail"] == "") {
+        invalidValues["namaWarnText"] = "Nama tidak boleh kosong";
+        invalidValues["namaWarn"] = true;
+      } else if (val["detail"].length > 100) {
+        invalidValues["namaWarnText"] = "Maksimal 100 karakter";
+        invalidValues["namaWarn"] = true;
       } else {
-        buttonIsDisabled = false;
+        invalidValues["namaWarn"] = false;
       }
-    });
-  }}>Coba</Button
->
+    }}
+  />
 
-<TextInput
-  light
-  size="sm"
-  warn={namaPasienInput["warn"]}
-  warnText={namaPasienInput["warnText"]}
-  labelText="Nama"
-  placeholder="Masukkan nama pasien..."
-  on:input={(val) => {
-    if (val["detail"] == "") {
-      namaPasienInput["warnText"] = "Nama tidak boleh kosong";
-      namaPasienInput["warn"] = true;
-      namaPasienInput["value"] = val["detail"];
-    } else if (val["detail"].length > 100) {
-      namaPasienInput["warnText"] = "Maksimal 100 karakter";
-      namaPasienInput["warn"] = true;
-      namaPasienInput["value"] = val["detail"];
-    } else {
-      namaPasienInput["warn"] = false;
-      namaPasienInput["value"] = val["detail"];
-    }
-  }}
-/>
+  <TextInput
+    size="sm"
+    light
+    labelText="Nomor Kartu"
+    placeholder="Masukkan nomor kartu..."
+    bind:value={nomorKartuInput}
+  />
 
-<TextInput
-  size="sm"
-  light
-  labelText="Nomor Kartu"
-  placeholder="Masukkan nomor kartu..."
-  on:input={(val) => {
-    nomorKartu = val["detail"];
-  }}
-/>
+  <TextInput
+    light
+    size="sm"
+    invalid={invalidValues["alamatWarn"]}
+    invalidText={invalidValues["alamatWarnText"]}
+    labelText="Alamat"
+    placeholder="Masukkan alamat pasien..."
+    bind:value={alamatInput}
+    on:input={(val) => {
+      if (val["detail"] == "") {
+        invalidValues["alamatWarnText"] = "Alamat tidak boleh kosong";
+        invalidValues["alamatWarn"] = true;
+      } else {
+        invalidValues["alamatWarn"] = false;
+      }
+    }}
+  />
 
-<TextInput
-  light
-  size="sm"
-  warn={alamatInput["warn"]}
-  warnText={alamatInput["warnText"]}
-  labelText="Alamat"
-  placeholder="Masukkan alamat pasien..."
-  on:input={(val) => {
-    if (val["detail"] == "") {
-      alamatInput["warnText"] = "Alamat tidak boleh kosong";
-      alamatInput["warn"] = true;
-      alamatInput["value"] = val["detail"];
-    } else {
-      alamatInput["warn"] = false;
-      alamatInput["value"] = val["detail"];
-    }
-  }}
-/>
+  <DatePicker
+    locale={Indonesian}
+    light
+    datePickerType="single"
+    on:change
+    bind:value={tanggalInput}
+    dateFormat="d-m-Y"
+  >
+    <DatePickerInput
+      required
+      labelText="Tanggal Lahir"
+      placeholder="DD-MM-YYYY"
+      pattern={`\\d{1,2}\\-\\d{1,2}\\-\\d{4}`}
+    />
+  </DatePicker>
 
-<DatePicker
-  locale={Indonesian}
-  light
-  datePickerType="single"
-  on:change
-  bind:value={tgl}
-  dateFormat="d-m-Y"
->
-  <DatePickerInput labelText="Tanggal Lahir" placeholder="mm/dd/yyyy" />
-</DatePicker>
+  <TextInput
+    size="sm"
+    light
+    labelText="Nomor Telepon"
+    placeholder="Masukkan nomor telepon..."
+    bind:value={nomorTeleponInput}
+  />
 
-<TextInput
-  size="sm"
-  light
-  labelText="Nomor Telepon"
-  placeholder="Masukkan nomor telepon..."
-  on:input={(val) => {
-    nomorTelepon = val["detail"];
-  }}
-/>
+  <Button type="submit" disabled={buttonIsDisabled}>Coba</Button>
+</Form>
