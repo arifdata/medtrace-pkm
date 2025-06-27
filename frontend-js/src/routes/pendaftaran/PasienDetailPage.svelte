@@ -1,7 +1,22 @@
 <script>
   import { client } from "../../pb/client.js";
-  import { Button, InlineNotification } from "carbon-components-svelte";
+  import {
+    Button,
+    InlineNotification,
+    Grid,
+    Column,
+    Row,
+    Tile,
+    SkeletonPlaceholder,
+    Form,
+    FormGroup,
+    TextInput,
+  } from "carbon-components-svelte";
   export let params = {};
+
+  let buttonDisabled = true;
+
+  let queriedData = {};
 
   // console.log(params["id"])
   async function getDataPasien(id) {
@@ -9,18 +24,56 @@
     return data;
   }
 
-  let dataPasien = getDataPasien(params["id"]);
+  let dataPasien = getDataPasien(params["id"]).then((data) => {
+    queriedData["namaPasienOri"] = data["nama_pasien"];
+  });
 </script>
 
-{#await dataPasien}
-  Loading...
-{:then data}
-  <Button>{data["nama_pasien"]}</Button>
-{:catch error}
-  <InlineNotification
-    title="Error:"
-    subtitle={error}
-    lowContrast
-    hideCloseButton
-  />
-{/await}
+<h4>Detail Pasien</h4>
+
+<Grid noGutterLeft>
+  <Row>
+    <Column>
+      <Tile>
+        {#await dataPasien}
+          <SkeletonPlaceholder />
+        {:then data}
+          <Form
+            on:submit={(e) => {
+              e.preventDefault();
+              console.log(e);
+            }}
+          >
+            <FormGroup>
+              <TextInput
+                labelText="Nama Pasien"
+                value={queriedData["namaPasienOri"]}
+                on:input={(val) => {
+                  console.log(val);
+                  if (queriedData["namaPasienOri"] != val["detail"]) {
+                    buttonDisabled = false;
+                  } else {
+                    buttonDisabled = true;
+                  }
+                }}
+              ></TextInput>
+            </FormGroup>
+            <Button bind:disabled={buttonDisabled} size="small" type="submit"
+              >Edit</Button
+            >
+          </Form>
+        {:catch error}
+          <InlineNotification
+            title="Error:"
+            subtitle={error}
+            lowContrast
+            hideCloseButton
+          />
+        {/await}
+      </Tile>
+    </Column>
+    <Column></Column>
+    <Column></Column>
+  </Row>
+</Grid>
+<br />
