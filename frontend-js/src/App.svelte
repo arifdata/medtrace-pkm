@@ -93,12 +93,7 @@
 
 <Theme bind:theme persist persistKey="__carbon-theme" />
 
-<Header
-  company="MedTrace PKM"
-  platformName="v.0.0.1"
-  bind:isSideNavOpen
-  persistentHamburgerMenu={true}
->
+<Header company="MedTrace PKM" platformName="v.0.0.1" bind:isSideNavOpen>
   <svelte:fragment slot="skip-to-content">
     <SkipToContent />
   </svelte:fragment>
