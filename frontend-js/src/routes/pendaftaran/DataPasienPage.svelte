@@ -136,7 +136,7 @@
             icon={Renew}
             on:click={() => {
               promiseListPasien = listFullPasien();
-            }}>Refresh</Button
+            }}>Muat ulang</Button
           >
         </ToolbarContent>
       </Toolbar>

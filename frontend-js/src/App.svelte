@@ -86,6 +86,7 @@
     Locked,
     Notebook,
     Dashboard,
+    Add,
     IbmConsultingAdvantageAssistant,
   } from "carbon-icons-svelte";
   let isSideNavOpen = false;
@@ -182,7 +183,10 @@
       <SideNavLink icon={Dashboard} href="#/" text="Dashboard" />
       <!-- <SideNavLink href="#/hello/sveltes" text="Say Hi!" /> -->
       <SideNavMenu icon={IbmConsultingAdvantageAssistant} text="Pendaftaran">
-        <SideNavMenuItem href="#/data_pasien" text="Data Pasien" />
+        <SideNavItems>
+          <SideNavLink href="#/data_pasien" text="Data Pasien" isSelected />
+          <SideNavLink href="#/data_pasien/tambah" text="Tambah data pasien" />
+        </SideNavItems>
 
         <!--
         <SideNavMenuItem href="#/wild/card" text="Wild Card" />
@@ -208,7 +212,7 @@
   {:else}
     <InlineNotification
       title="Error:"
-      subtitle="Login untuk mengakses halaman ini."
+      subtitle="Login untuk mengakses lebih lanjut."
       lowContrast
       hideCloseButton
     />
