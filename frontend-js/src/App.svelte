@@ -181,7 +181,6 @@
   <SideNavItems>
     {#if $isLoggedIn}
       <SideNavLink icon={Dashboard} href="#/" text="Dashboard" />
-      <!-- <SideNavLink href="#/hello/sveltes" text="Say Hi!" /> -->
       <SideNavMenu icon={IbmConsultingAdvantageAssistant} text="Pendaftaran">
         <SideNavItems>
           <SideNavLink href="#/data_pasien" text="Data Pasien" isSelected />

@@ -11,10 +11,10 @@
     Form,
     FormGroup,
     TextInput,
-  } from "carbon-components-svelte";
-  export let params = {};
+  } from "carbon-components-svelte"
 
-  let buttonDisabled = true;
+  import isEqual from 'underscore/modules/isEqual'
+  export let params = {};
 
   let queriedData = {};
 
@@ -26,10 +26,21 @@
 
   let dataPasien = getDataPasien(params["id"]).then((data) => {
     queriedData["namaPasienOri"] = data["nama_pasien"];
+    queriedData["nomorKartuOri"] = data["nomor_kartu"];
+    queriedData["alamatOri"] = data["alamat"];
+    queriedData["tanggalLahirOri"] = data["tanggal_lahir"].slice(0, 10);
+    queriedData["nomorTeleponOri"] = data["nomor_telepon"];
+
   });
+
+  let bufferData = queriedData;
+  let buttonDisabled = isEqual(queriedData, bufferData);
+
 </script>
 
 <h4>Detail Pasien</h4>
+
+<br>
 
 <Grid noGutterLeft>
   <Row>
@@ -72,7 +83,6 @@
         {/await}
       </Tile>
     </Column>
-    <Column></Column>
     <Column></Column>
   </Row>
 </Grid>

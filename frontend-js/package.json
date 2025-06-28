@@ -22,6 +22,7 @@
     "flatpickr": "^4.6.13",
     "pocketbase": "^0.26.1",
     "svelte-spa-router": "^4.0.1",
-    "toastify-js": "^1.12.0"
+    "toastify-js": "^1.12.0",
+    "underscore": "^1.13.7"
   }
 }

@@ -35,9 +35,12 @@
     tanggalInput = undefined;
     nomorTeleponInput = undefined;
   }
+
 </script>
 
 <h4>Tambah pasien</h4>
+
+<br>
 
 <Grid noGutterLeft>
   <Row>
