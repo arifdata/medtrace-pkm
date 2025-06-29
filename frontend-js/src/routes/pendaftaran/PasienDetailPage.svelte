@@ -11,12 +11,16 @@
     Form,
     FormGroup,
     TextInput,
+    DatePicker,
+    DatePickerInput,
   } from "carbon-components-svelte";
 
-  import isEqual from "underscore/modules/isEqual";
+  import { isEqual } from "lodash";
+  import { Indonesian } from "flatpickr/dist/l10n/id.js";
   export let params = {};
 
   let queriedData = {};
+  let bufferData = {};
 
   // console.log(params["id"])
   async function getDataPasien(id) {
@@ -24,16 +28,33 @@
     return data;
   }
 
+  function aturTanggal(tanggal) {
+    let tglSplit = tanggal.split("-");
+    return `${tglSplit[2]}-${tglSplit[1]}-${tglSplit[0]}`;
+  }
+
   let dataPasien = getDataPasien(params["id"]).then((data) => {
-    queriedData["namaPasienOri"] = data["nama_pasien"];
-    queriedData["nomorKartuOri"] = data["nomor_kartu"];
-    queriedData["alamatOri"] = data["alamat"];
-    queriedData["tanggalLahirOri"] = data["tanggal_lahir"].slice(0, 10);
-    queriedData["nomorTeleponOri"] = data["nomor_telepon"];
+    queriedData["nama_pasien"] = data["nama_pasien"];
+    queriedData["nomor_kartu"] = data["nomor_kartu"];
+    queriedData["alamat"] = data["alamat"];
+    queriedData["tanggal_lahir"] = aturTanggal(
+      data["tanggal_lahir"].slice(0, 10),
+    );
+    queriedData["nomor_telepon"] = data["nomor_telepon"];
+
+    bufferData["nama_pasien"] = data["nama_pasien"];
+    bufferData["nomor_kartu"] = data["nomor_kartu"];
+    bufferData["alamat"] = data["alamat"];
+    bufferData["tanggal_lahir"] = aturTanggal(
+      data["tanggal_lahir"].slice(0, 10),
+    );
+    bufferData["nomor_telepon"] = data["nomor_telepon"];
   });
 
-  let bufferData = queriedData;
-  let buttonDisabled = isEqual(queriedData, bufferData);
+  // console.log(queriedData);
+  // console.log(bufferData);
+  // console.log(isEqual(queriedData, bufferData));
+  let buttonDisabled = true;
 </script>
 
 <h4>Detail Pasien</h4>
@@ -47,22 +68,22 @@
         <h5>Original Data</h5>
         <br />
         <strong>Nama Pasien:</strong>
-        {queriedData["namaPasienOri"]}<br /><br />
+        {queriedData["nama_pasien"]}<br /><br />
 
         <strong>Nomor Kartu:</strong>
-        {#if queriedData["nomorKartuOri"]}{queriedData[
-            "nomorKartuOri"
+        {#if queriedData["nomor_kartu"]}{queriedData[
+            "nomor_kartu"
           ]}{:else}-{/if}<br /><br />
 
         <strong>Alamat:</strong>
-        {queriedData["alamatOri"]}<br /><br />
+        {queriedData["alamat"]}<br /><br />
 
         <strong>Tanggal Lahir:</strong>
-        {queriedData["tanggalLahirOri"]}<br /><br />
+        {queriedData["tanggal_lahir"]}<br /><br />
 
         <strong>Nomor Telepon:</strong>
-        {#if queriedData["nomorTeleponOri"]}{queriedData[
-            "nomorTeleponOri"
+        {#if queriedData["nomor_telepon"]}{queriedData[
+            "nomor_telepon"
           ]}{:else}-{/if}<br /><br />
       </Tile>
     </Column>
@@ -71,7 +92,7 @@
         {#await dataPasien}
           <SkeletonPlaceholder />
         {:then data}
-          <h5>Edit Data</h5>
+          <h5>Perbaharui Data</h5>
           <br />
           <Form
             on:submit={(e) => {
@@ -81,21 +102,71 @@
           >
             <FormGroup>
               <TextInput
+                required
                 labelText="Nama Pasien"
-                value={queriedData["namaPasienOri"]}
+                value={bufferData["nama_pasien"]}
                 on:input={(val) => {
-                  console.log(val);
-                  if (queriedData["namaPasienOri"] != val["detail"]) {
-                    buttonDisabled = false;
-                  } else {
-                    buttonDisabled = true;
-                  }
+                  bufferData["nama_pasien"] = val["detail"];
+                  buttonDisabled = isEqual(queriedData, bufferData);
+                }}
+              ></TextInput>
+
+              <TextInput
+                labelText="Nomor kartu"
+                value={bufferData["nomor_kartu"]}
+                on:input={(val) => {
+                  bufferData["nomor_kartu"] = val["detail"];
+                  buttonDisabled = isEqual(queriedData, bufferData);
+                }}
+              ></TextInput>
+
+              <TextInput
+                required
+                labelText="Alamat"
+                value={bufferData["alamat"]}
+                on:input={(val) => {
+                  bufferData["alamat"] = val["detail"];
+                  buttonDisabled = isEqual(queriedData, bufferData);
+                }}
+              ></TextInput>
+
+              <DatePicker
+                locale={Indonesian}
+                light
+                value={bufferData["tanggal_lahir"]}
+                datePickerType="single"
+                on:change={(val) => {
+                  bufferData["tanggal_lahir"] = val["detail"]["dateStr"];
+                  buttonDisabled = isEqual(queriedData, bufferData);
+                }}
+                dateFormat="d-m-Y"
+              >
+                <DatePickerInput
+                  required
+                  labelText="Tanggal Lahir"
+                  placeholder="DD-MM-YYYY"
+                  pattern={`\\d{1,2}\\-\\d{1,2}\\-\\d{4}`}
+                />
+              </DatePicker>
+
+              <TextInput
+                labelText="Nomor Telepon"
+                value={bufferData["nomor_telepon"]}
+                on:input={(val) => {
+                  bufferData["nomor_telepon"] = val["detail"];
+                  buttonDisabled = isEqual(queriedData, bufferData);
                 }}
               ></TextInput>
             </FormGroup>
             <Button bind:disabled={buttonDisabled} size="small" type="submit"
-              >Edit</Button
+              >Ubah Data</Button
             >
+            <!-- <button
+              on:click={() => {
+                buttonDisabled = !buttonDisabled;
+                console.log(buttonDisabled);
+              }}>aaa</button
+            > -->
           </Form>
         {:catch error}
           <InlineNotification

@@ -20,9 +20,9 @@
     "carbon-icons-svelte": "^13.4.0",
     "dayjs": "^1.11.13",
     "flatpickr": "^4.6.13",
+    "lodash": "^4.17.21",
     "pocketbase": "^0.26.1",
     "svelte-spa-router": "^4.0.1",
-    "toastify-js": "^1.12.0",
-    "underscore": "^1.13.7"
+    "toastify-js": "^1.12.0"
   }
 }
