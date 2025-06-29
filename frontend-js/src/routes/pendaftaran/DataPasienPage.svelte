@@ -1,54 +1,37 @@
 <script>
   import { client } from "../../pb/client";
-  import { fakerID_ID as faker } from "@faker-js/faker";
-  import dayjs from "dayjs";
-  import "dayjs/locale/id";
-  dayjs.locale("id");
+  // import { fakerID_ID as faker } from "@faker-js/faker";
+  import { hitungUsia, rapikanTanggalLahir } from "../../utils/dateUtils";
 
   // some icons
   import { Add, Renew } from "carbon-icons-svelte";
 
-  // function untuk generate fake data
-  async function generateDataPasien() {
-    // example create data
-    const data = {
-      nama_pasien: faker.person.fullName(),
-      nomor_kartu: faker.finance.accountNumber(),
-      alamat: faker.location.city(),
-      tanggal_lahir: faker.date.birthdate(),
-      nomor_telepon: faker.phone.number(),
-    };
+  // // function untuk generate fake data
+  // async function generateDataPasien() {
+  //   // example create data
+  //   const data = {
+  //     nama_pasien: faker.person.fullName(),
+  //     nomor_kartu: faker.finance.accountNumber(),
+  //     alamat: faker.location.city(),
+  //     tanggal_lahir: faker.date.birthdate(),
+  //     nomor_telepon: faker.phone.number(),
+  //   };
 
-    try {
-      const record = await client
-        .collection("data_pasien")
-        .create(data)
-        .then((data) => console.log(data["nama_pasien"]));
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  //   try {
+  //     const record = await client
+  //       .collection("data_pasien")
+  //       .create(data)
+  //       .then((data) => console.log(data["nama_pasien"]));
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
 
-  function generateBanyakDataPasien(number) {
-    for (let i = 0; i < number; i++) {
-      generateDataPasien();
-    }
-  }
-
-  //function untuk menampilan tanggal lahir dengan enak dibaca
-  function rapikanTanggalLahir(tanggalLahir) {
-    let dt = dayjs(tanggalLahir);
-    return dt.format("DD MMMM YYYY");
-  }
-
-  //function untuk menghitung usia
-  function hitungUsia(tanggalLahir) {
-    let dt1 = dayjs(tanggalLahir);
-    let dt2 = dayjs();
-    let usiaTahun = dt2.diff(dt1, "year");
-    let usiaBulan = dt2.diff(dt1, "month") % 12;
-    return `${usiaTahun} tahun ${usiaBulan} bulan`;
-  }
+  // function generateBanyakDataPasien(number) {
+  //   for (let i = 0; i < number; i++) {
+  //     generateDataPasien();
+  //   }
+  // }
 
   //tarik seluruh data pasien dari pocketbase
   async function listFullPasien() {
@@ -96,11 +79,7 @@
   <DataTableSkeleton
     size="short"
     zebra
-    headers={[
-      "Nama",
-      "Alamat",
-      "Usia",
-    ]}
+    headers={["Nama", "Alamat", "Usia"]}
     rows={10}
   />
 {:then val}
@@ -127,11 +106,9 @@
       <Toolbar size="sm">
         <ToolbarContent>
           <ToolbarSearch persistent shouldFilterRows />
-          <Button
-            icon={Add}
-            href="#/data_pasien/tambah"
-            target="_blank"
-          >Tambah Data</Button>
+          <Button icon={Add} href="#/data_pasien/tambah" target="_blank"
+            >Tambah Data</Button
+          >
           <Button
             icon={Renew}
             on:click={() => {
@@ -147,9 +124,9 @@
       </svelte:fragment>
       <svelte:fragment slot="cell" let:row let:cell>
         {#if cell.key === "nama-pasien"}
-          <Link
-            href={`#/data_pasien/detail/${row['id']}`}
-            target="_blank">{cell.value}</Link>
+          <Link href={`#/data_pasien/detail/${row["id"]}`} target="_blank"
+            >{cell.value}</Link
+          >
         {:else}
           {cell.value}
         {/if}

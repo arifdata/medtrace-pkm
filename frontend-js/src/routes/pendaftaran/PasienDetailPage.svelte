@@ -11,9 +11,9 @@
     Form,
     FormGroup,
     TextInput,
-  } from "carbon-components-svelte"
+  } from "carbon-components-svelte";
 
-  import isEqual from 'underscore/modules/isEqual'
+  import isEqual from "underscore/modules/isEqual";
   export let params = {};
 
   let queriedData = {};
@@ -30,25 +30,49 @@
     queriedData["alamatOri"] = data["alamat"];
     queriedData["tanggalLahirOri"] = data["tanggal_lahir"].slice(0, 10);
     queriedData["nomorTeleponOri"] = data["nomor_telepon"];
-
   });
 
   let bufferData = queriedData;
   let buttonDisabled = isEqual(queriedData, bufferData);
-
 </script>
 
 <h4>Detail Pasien</h4>
 
-<br>
+<br />
 
 <Grid noGutterLeft>
   <Row>
+    <Column>
+      <Tile light>
+        <h5>Original Data</h5>
+        <br />
+        <strong>Nama Pasien:</strong>
+        {queriedData["namaPasienOri"]}<br /><br />
+
+        <strong>Nomor Kartu:</strong>
+        {#if queriedData["nomorKartuOri"]}{queriedData[
+            "nomorKartuOri"
+          ]}{:else}-{/if}<br /><br />
+
+        <strong>Alamat:</strong>
+        {queriedData["alamatOri"]}<br /><br />
+
+        <strong>Tanggal Lahir:</strong>
+        {queriedData["tanggalLahirOri"]}<br /><br />
+
+        <strong>Nomor Telepon:</strong>
+        {#if queriedData["nomorTeleponOri"]}{queriedData[
+            "nomorTeleponOri"
+          ]}{:else}-{/if}<br /><br />
+      </Tile>
+    </Column>
     <Column>
       <Tile>
         {#await dataPasien}
           <SkeletonPlaceholder />
         {:then data}
+          <h5>Edit Data</h5>
+          <br />
           <Form
             on:submit={(e) => {
               e.preventDefault();
@@ -81,9 +105,8 @@
             hideCloseButton
           />
         {/await}
-      </Tile>
-    </Column>
-    <Column></Column>
+      </Tile></Column
+    >
   </Row>
 </Grid>
 <br />
