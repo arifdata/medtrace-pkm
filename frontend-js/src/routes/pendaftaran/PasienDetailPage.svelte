@@ -15,6 +15,7 @@
     DatePickerInput,
   } from "carbon-components-svelte";
 
+
   import { isEqual } from "lodash";
   import { Indonesian } from "flatpickr/dist/l10n/id.js";
   export let params = {};
@@ -97,7 +98,16 @@
           <Form
             on:submit={(e) => {
               e.preventDefault();
-              console.log(e);
+              console.log(e['target'][1].value);
+              console.log(e['target'][2].value);
+              console.log(e['target'][3].value);
+              const tgl = e['target'][4].value;
+              const tglSplit = tgl.split("-");
+              console.log(tglSplit)
+              const tglParse = Date.parse(`${tglSplit[2]}-${tglSplit[1]}-${tglSplit[0]}T00:00:00Z`);
+              console.log(tglParse);
+              console.log(e['target'][7].value);
+              console.log(params['id']);
             }}
           >
             <FormGroup>
