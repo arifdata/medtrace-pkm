@@ -1,5 +1,8 @@
 <script>
   import { client } from "../../pb/client.js";
+  import Toastify from "toastify-js";
+  import "toastify-js/src/toastify.css";
+
   import {
     Button,
     InlineNotification,
@@ -15,6 +18,7 @@
     DatePickerInput,
   } from "carbon-components-svelte";
 
+  import { parseDatePicker } from "../../utils/dateUtils";
 
   import { isEqual } from "lodash";
   import { Indonesian } from "flatpickr/dist/l10n/id.js";
@@ -52,9 +56,14 @@
     bufferData["nomor_telepon"] = data["nomor_telepon"];
   });
 
-  // console.log(queriedData);
-  // console.log(bufferData);
-  // console.log(isEqual(queriedData, bufferData));
+  async function editRecord(id, data) {
+    try {
+      await client.collection("data_pasien").update(id, data);
+    } catch (error) {
+      alert(error);
+    }
+  }
+
   let buttonDisabled = true;
 </script>
 
@@ -66,7 +75,7 @@
   <Row>
     <Column>
       <Tile light>
-        <h5>Original Data</h5>
+        <h5>Data Tersimpan</h5>
         <br />
         <strong>Nama Pasien:</strong>
         {queriedData["nama_pasien"]}<br /><br />
@@ -98,16 +107,43 @@
           <Form
             on:submit={(e) => {
               e.preventDefault();
-              console.log(e['target'][1].value);
-              console.log(e['target'][2].value);
-              console.log(e['target'][3].value);
-              const tgl = e['target'][4].value;
-              const tglSplit = tgl.split("-");
-              console.log(tglSplit)
-              const tglParse = Date.parse(`${tglSplit[2]}-${tglSplit[1]}-${tglSplit[0]}T00:00:00Z`);
-              console.log(tglParse);
-              console.log(e['target'][7].value);
-              console.log(params['id']);
+
+              const data = {
+                nama_pasien: e["target"][1].value,
+                nomor_kartu: e["target"][2].value,
+                alamat: e["target"][3].value,
+                nomor_telepon: e["target"][7].value,
+                tanggal_lahir: parseDatePicker(e["target"][4].value),
+              };
+              editRecord(params["id"], data).then(() => {
+                dataPasien = getDataPasien(params["id"]).then((data) => {
+                  queriedData["nama_pasien"] = data["nama_pasien"];
+                  queriedData["nomor_kartu"] = data["nomor_kartu"];
+                  queriedData["alamat"] = data["alamat"];
+                  queriedData["tanggal_lahir"] = aturTanggal(
+                    data["tanggal_lahir"].slice(0, 10),
+                  );
+                  queriedData["nomor_telepon"] = data["nomor_telepon"];
+
+                  bufferData["nama_pasien"] = data["nama_pasien"];
+                  bufferData["nomor_kartu"] = data["nomor_kartu"];
+                  bufferData["alamat"] = data["alamat"];
+                  bufferData["tanggal_lahir"] = aturTanggal(
+                    data["tanggal_lahir"].slice(0, 10),
+                  );
+                  bufferData["nomor_telepon"] = data["nomor_telepon"];
+                  buttonDisabled = true;
+
+                  Toastify({
+                    text: `Berhasil perbarui data`,
+                    duration: 3000,
+                    gravity: "bottom",
+                    style: {
+                      background: "#42be65",
+                    },
+                  }).showToast();
+                });
+              });
             }}
           >
             <FormGroup>
@@ -171,12 +207,6 @@
             <Button bind:disabled={buttonDisabled} size="small" type="submit"
               >Ubah Data</Button
             >
-            <!-- <button
-              on:click={() => {
-                buttonDisabled = !buttonDisabled;
-                console.log(buttonDisabled);
-              }}>aaa</button
-            > -->
           </Form>
         {:catch error}
           <InlineNotification
