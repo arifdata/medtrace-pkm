@@ -88,6 +88,7 @@
     Dashboard,
     Add,
     IbmConsultingAdvantageAssistant,
+    Medication,
   } from "carbon-icons-svelte";
   let isSideNavOpen = false;
 </script>
@@ -183,16 +184,21 @@
       <SideNavLink icon={Dashboard} href="#/" text="Dashboard" />
       <SideNavMenu icon={IbmConsultingAdvantageAssistant} text="Pendaftaran">
         <SideNavItems>
-          <SideNavLink href="#/data_pasien" text="Data Pasien" isSelected />
+          <SideNavLink href="#/data_pasien" text="Data Pasien" />
           <SideNavLink href="#/data_pasien/tambah" text="Tambah data pasien" />
         </SideNavItems>
+      </SideNavMenu>
+      <SideNavMenu icon={Medication} text="Farmasi">
+        <SideNavItems>
+          <SideNavLink href="#/farmasi/master_bmhp" text="Master BMHP" />
+        </SideNavItems>
+      </SideNavMenu>
 
         <!--
         <SideNavMenuItem href="#/wild/card" text="Wild Card" />
         <SideNavMenuItem href="/" text="Link 2" />
         <SideNavMenuItem href="/" text="Link 3" />
       -->
-      </SideNavMenu>
     {:else}
       <SideNavLink icon={Locked} text="Akses dikunci" />
     {/if}

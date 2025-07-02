@@ -6,6 +6,9 @@ import DataPasienPage from './routes/pendaftaran/DataPasienPage.svelte'
 import PasienDetailPage from './routes/pendaftaran/PasienDetailPage.svelte'
 import TambahPasienPage from './routes/pendaftaran/TambahPasienPage.svelte'
 
+// Route Farmasi
+import MasterBMHP from './routes/farmasi/MasterBMHP.svelte'
+
 // Example routes
 import Name from './routes/Name.svelte'
 import Wild from './routes/Wild.svelte'
@@ -19,6 +22,8 @@ export default {
     '/data_pasien': DataPasienPage,
     '/data_pasien/detail/:id': PasienDetailPage,
     '/data_pasien/tambah': TambahPasienPage,
+
+    '/farmasi/master_bmhp': MasterBMHP,
 
     // Using named parameters, with last being optional
     '/hello/:first/:last?': Name,
