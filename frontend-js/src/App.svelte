@@ -183,15 +183,11 @@
     {#if $isLoggedIn}
       <SideNavLink icon={Dashboard} href="#/" text="Dashboard" />
       <SideNavMenu icon={IbmConsultingAdvantageAssistant} text="Pendaftaran">
-        <SideNavItems>
-          <SideNavLink href="#/data_pasien" text="Data Pasien" />
-          <SideNavLink href="#/data_pasien/tambah" text="Tambah data pasien" />
-        </SideNavItems>
+          <SideNavMenuItem href="#/data_pasien" text="Data Pasien" />
+          <SideNavMenuItem href="#/data_pasien/tambah" text="Tambah data pasien" />
       </SideNavMenu>
       <SideNavMenu icon={Medication} text="Farmasi">
-        <SideNavItems>
-          <SideNavLink href="#/farmasi/master_bmhp" text="Master BMHP" />
-        </SideNavItems>
+          <SideNavMenuItem href="#/farmasi/master_bmhp" text="Master BMHP" />
       </SideNavMenu>
 
         <!--
