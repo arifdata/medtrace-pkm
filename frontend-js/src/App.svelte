@@ -184,7 +184,7 @@
       <SideNavLink icon={Dashboard} href="#/" text="Dashboard" />
       <SideNavMenu icon={IbmConsultingAdvantageAssistant} text="Pendaftaran">
           <SideNavMenuItem href="#/data_pasien" text="Data Pasien" />
-          <SideNavMenuItem href="#/data_pasien/tambah" text="Tambah data pasien" />
+          <!-- <SideNavMenuItem href="#/data_pasien/tambah" text="Tambah data pasien" /> -->
       </SideNavMenu>
       <SideNavMenu icon={Medication} text="Farmasi">
           <SideNavMenuItem href="#/farmasi/master_bmhp" text="Master BMHP" />
