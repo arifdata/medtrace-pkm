@@ -1,26 +1,19 @@
 <script>
-  import { Button, Modal, TextInput } from "carbon-components-svelte";
-
-  let modalSumberOpened = false;
+  import { Tabs, Tab, TabContent } from "carbon-components-svelte";
+  import SumberBMHP from './master_bmhp_components/SumberBMHP.svelte'
 </script>
-<h4>Master BMHP</h4>
 
-<Button size="small" on:click={() => (modalSumberOpened = true)} >Tambah sumber BMHP</Button>
+<Tabs>
+    <Tab label="Master BMHP" />
+    <Tab label="Sumber BMHP" />
+    <Tab label="Tab label 3" />
+    <svelte:fragment slot="content">
+      <TabContent>Content 1</TabContent>
+      <TabContent>
+        <SumberBMHP />
+      </TabContent>
+      <TabContent>Content 3</TabContent>
+    </svelte:fragment>
+</Tabs>
 
-<Modal
-    bind:open={modalSumberOpened}
-    modalHeading="Tambah sumber BMHP baru"
-    primaryButtonText="Submit"
-    secondaryButtonText="Cancel"
-    selectorPrimaryFocus="#form-sumber"
-    on:click:button--secondary={() => (modalSumberOpened = false)}
-    on:open
-    on:close
-    on:submit
-  >
-      <TextInput
-    id="form-sumber"
-    labelText="Sumber BMHP"
-    placeholder="Masukkan sumber BMHP..."
-  />
-    </Modal>
+
