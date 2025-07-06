@@ -31,7 +31,6 @@
   }
 
   let promiseListSumber = listFullSumber();
-  console.log(promiseListSumber[0]);
 </script>
 
 <Modal
