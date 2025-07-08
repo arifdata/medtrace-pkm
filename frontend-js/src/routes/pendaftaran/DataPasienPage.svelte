@@ -68,6 +68,7 @@
     ToolbarSearch,
     Button,
     Link,
+    Loading,
   } from "carbon-components-svelte";
 
   let promiseListPasien = listFullPasien();
@@ -76,12 +77,7 @@
 </script>
 
 {#await promiseListPasien}
-  <DataTableSkeleton
-    size="short"
-    zebra
-    headers={["Nama", "Alamat", "Usia"]}
-    rows={10}
-  />
+  <Loading withOverlay={false} small />
 {:then val}
   {#if val.length > 0}
     <DataTable

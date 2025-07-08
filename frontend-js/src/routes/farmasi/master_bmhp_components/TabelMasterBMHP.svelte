@@ -11,6 +11,7 @@
         ToolbarSearch,
         Button,
         Link,
+        Loading,
     } from "carbon-components-svelte";
 
     import { Add, Renew } from "carbon-icons-svelte";
@@ -30,6 +31,8 @@
           id: data[i].id,
           "nama-bmhp": data[i].nama_obat,
           "sumber": data[i].expand.sumber.sumber,
+          "is-generik": data[i].is_generik ? "Generik" : "Non-Gnrk",
+          "is-alkes": data[i].is_alkes ? "Alkes" : "Non-Alks",
         });
       }
       return rowData;
@@ -42,7 +45,7 @@
 </script>
 
 {#await promiseListMaster}
-  loading...
+  <Loading withOverlay={false} small />
 {:then val}
   {#if val.length > 0}
     <DataTable
@@ -50,11 +53,12 @@
       sortable
       size="short"
       zebra
-      expandable
       stickyHeader
       headers={[
         { key: "nama-bmhp", value: "Nama BMHP" },
         { key: "sumber", value: "Sumber" },
+        { key: "is-generik", value: "Generik?" },
+        { key: "is-alkes", value: "Alkes?" },
       ]}
       rows={generateRowMasterBMHP(val)}
       {page}
@@ -68,12 +72,18 @@
           >
           <Button icon={Renew}
             on:click={() => {
-              console.log("test");
+              promiseListMaster = listFullMasterBMHP();
             }}>Muat ulang</Button
           >
         </ToolbarContent>
       </Toolbar>
   </DataTable>
+    <Pagination
+      bind:pageSize
+      bind:page
+      totalItems={val.length}
+      pageSizes={[20, 35, 50]}
+    />
   {:else}
   belum ada data
   {/if}
