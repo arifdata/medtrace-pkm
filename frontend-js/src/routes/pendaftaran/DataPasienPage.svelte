@@ -77,7 +77,7 @@
 </script>
 
 {#await promiseListPasien}
-  <Loading withOverlay={false} small />
+  <Loading />
 {:then val}
   {#if val.length > 0}
     <DataTable

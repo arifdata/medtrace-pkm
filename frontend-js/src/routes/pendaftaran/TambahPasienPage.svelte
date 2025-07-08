@@ -42,7 +42,7 @@
 
 <br>
 
-<Grid noGutterLeft>
+<Grid noGutterLeft narrow >
   <Row>
     <Column>
       <Tile>

@@ -10,13 +10,14 @@
     Column,
     UnorderedList,
     ListItem,
-    SkeletonText,
+    Loading,
   } from "carbon-components-svelte";
 
   import { Add, Renew } from "carbon-icons-svelte";
 
   let modalSumberOpened = false;
   let valueNewSumber = "";
+  let addLoading = false;
 
   async function listFullSumber() {
     const resultList = await client.collection("sumber").getFullList();
@@ -46,13 +47,16 @@
   on:open
   on:close
   on:submit={() => {
+    addLoading = true;
     createNewSumber(valueNewSumber).then(() => {
       valueNewSumber = "";
       promiseListSumber = listFullSumber();
+      addLoading = false;
       modalSumberOpened = false;
     });
   }}
 >
+<Loading bind:active={addLoading}/>
   <TextInput
     id="form-sumber"
     labelText="Sumber BMHP"
@@ -88,7 +92,7 @@
 <br />
 
 {#await promiseListSumber}
-  <SkeletonText />
+  <Loading />
 {:then val}
   {#if val.length > 0}
     <UnorderedList>

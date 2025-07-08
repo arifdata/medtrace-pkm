@@ -41,11 +41,10 @@
     let promiseListMaster = listFullMasterBMHP();
     let pageSize = 20;
     let page = 1;
-    console.log(promiseListMaster);
 </script>
 
 {#await promiseListMaster}
-  <Loading withOverlay={false} small />
+  <Loading />
 {:then val}
   {#if val.length > 0}
     <DataTable
@@ -67,7 +66,7 @@
       <Toolbar size="sm">
         <ToolbarContent>
           <ToolbarSearch persistent shouldFilterRows />
-          <Button icon={Add} href="#/data_pasien/tambah" target="_blank"
+          <Button icon={Add} href="#/farmasi/master_bmhp/tambah" target="_blank"
             >Tambah Data</Button
           >
           <Button icon={Renew}
