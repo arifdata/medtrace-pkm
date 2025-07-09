@@ -12,9 +12,29 @@
         Button,
         Link,
         Loading,
+        Modal,
+        TextInput,
     } from "carbon-components-svelte";
 
     import { Add, Renew } from "carbon-icons-svelte";
+
+    async function createNewMaster(){
+      try {
+        const data = {
+          "nama_obat": "Suntikan M",
+          "sumber": "tptoah9makn5utt",
+          "is_generik": false,
+          "is_alkes": true,
+        };
+        await client.collection('master_bmhp').create(data);
+        return true;
+      } catch (err) {
+        return false;
+      }
+    }
+
+    let modalAddMaster = false;
+    let addLoading = false;
 
     async function listFullMasterBMHP() {
         const resultList = await client.collection("master_bmhp").getFullList({
@@ -66,7 +86,10 @@
       <Toolbar size="sm">
         <ToolbarContent>
           <ToolbarSearch persistent shouldFilterRows />
-          <Button icon={Add} href="#/farmasi/master_bmhp/tambah" target="_blank"
+          <Button icon={Add}
+			on:click={() => {
+				modalAddMaster = true;
+			}}
             >Tambah Data</Button
           >
           <Button icon={Renew}
@@ -87,3 +110,38 @@
   belum ada data
   {/if}
 {/await}
+
+<Modal
+  bind:open={modalAddMaster}
+  modalHeading="Tambah Master Item Baru"
+  primaryButtonText="Submit"
+  secondaryButtonText="Cancel"
+  selectorPrimaryFocus="#nama-bmhp"
+  on:click:button--secondary={() => {
+    modalAddMaster = false;
+  }}
+  on:open
+  on:close
+  on:submit={() => {
+    addLoading = true;
+    createNewMaster().then((val) => {
+      if (val) {
+        alert("Berhasil");
+        addLoading = false;
+        modalAddMaster = false;
+        promiseListMaster = listFullMasterBMHP();
+      } else {
+        alert("Gagal");
+        addLoading = false;
+        modalAddMaster = false;
+      }
+    });
+  }}
+>
+<Loading bind:active={addLoading}/>
+  <TextInput
+    id="nama-bmhp"
+    labelText="Nama BMHP"
+    placeholder="Masukkan nama BMHP..."
+  />
+</Modal>

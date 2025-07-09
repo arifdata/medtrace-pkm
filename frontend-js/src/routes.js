@@ -8,7 +8,6 @@ import TambahPasienPage from './routes/pendaftaran/TambahPasienPage.svelte'
 
 // Route Farmasi
 import MasterBMHP from './routes/farmasi/MasterBMHP.svelte'
-import TambahMasterBMHP from './routes/farmasi/master_bmhp_components/TambahMasterBMHP.svelte'
 
 // Example routes
 import Name from './routes/Name.svelte'
@@ -25,7 +24,6 @@ export default {
     '/data_pasien/tambah': TambahPasienPage,
 
     '/farmasi/master_bmhp': MasterBMHP,
-    '/farmasi/master_bmhp/tambah': TambahMasterBMHP,
 
     // Using named parameters, with last being optional
     '/hello/:first/:last?': Name,
