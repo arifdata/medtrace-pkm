@@ -14,6 +14,10 @@
         Loading,
         Modal,
         TextInput,
+        Toggle,
+        Grid,
+        Row,
+        Column,
     } from "carbon-components-svelte";
 
     import { Add, Renew } from "carbon-icons-svelte";
@@ -21,7 +25,7 @@
     async function createNewMaster(){
       try {
         const data = {
-          "nama_obat": "Suntikan M",
+          "nama_obat": "Suntikan Maxx",
           "sumber": "tptoah9makn5utt",
           "is_generik": false,
           "is_alkes": true,
@@ -61,6 +65,11 @@
     let promiseListMaster = listFullMasterBMHP();
     let pageSize = 20;
     let page = 1;
+
+    let nama_obat = "";
+    let sumber = "";
+    let is_generik = true;
+    let is_alkes = false;
 </script>
 
 {#await promiseListMaster}
@@ -138,10 +147,40 @@
     });
   }}
 >
-<Loading bind:active={addLoading}/>
+  <Loading bind:active={addLoading}/>
+
   <TextInput
     id="nama-bmhp"
     labelText="Nama BMHP"
     placeholder="Masukkan nama BMHP..."
+    bind:value={nama_obat}
   />
+  <br />
+
+  <Grid narrow>
+    <Row>
+      <Column>
+  <Toggle
+    labelText="Apakah termasuk Alkes"
+    bind:toggled={is_alkes}
+    labelA="Non Alkes"
+    labelB="Alkes"
+    size="sm"
+  />
+
+      </Column>
+      <Column>
+  <Toggle
+    labelText="Apakah termasuk Obat Generik"
+    bind:toggled={is_generik}
+    labelA="Non Generik"
+    labelB="Generik"
+    size="sm"
+  />
+
+      </Column>
+    </Row>
+  </Grid>
+
+
 </Modal>
