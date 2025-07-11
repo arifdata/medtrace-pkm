@@ -22,6 +22,8 @@
 
     import { Add, Renew } from "carbon-icons-svelte";
 
+    import DropDownSumber from './DropDownSumber.svelte'
+
     async function createNewMaster(){
       try {
         const data = {
@@ -120,6 +122,7 @@
   {/if}
 {/await}
 
+
 <Modal
   bind:open={modalAddMaster}
   modalHeading="Tambah Master Item Baru"
@@ -156,6 +159,7 @@
     bind:value={nama_obat}
   />
   <br />
+  <DropDownSumber />
 
   <Grid narrow>
     <Row>
