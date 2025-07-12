@@ -27,10 +27,10 @@
     async function createNewMaster(){
       try {
         const data = {
-          "nama_obat": "Suntikan Maxx",
-          "sumber": "tptoah9makn5utt",
-          "is_generik": false,
-          "is_alkes": true,
+          "nama_obat": nama_obat,
+          "sumber": idSumber,
+          "is_generik": is_generik,
+          "is_alkes": is_alkes,
         };
         await client.collection('master_bmhp').create(data);
         return true;
@@ -69,7 +69,7 @@
     let page = 1;
 
     let nama_obat = "";
-    let sumber = "";
+    let idSumber;
     let is_generik = true;
     let is_alkes = false;
 
@@ -162,7 +162,7 @@
     bind:value={nama_obat}
   />
   <br />
-  <DropDownSumber bind:this={sumberDropdown} />
+  <DropDownSumber bind:this={sumberDropdown} bind:idSumber={idSumber} />
 
   <Grid narrow>
     <Row>
