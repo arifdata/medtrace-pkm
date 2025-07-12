@@ -72,6 +72,8 @@
     let sumber = "";
     let is_generik = true;
     let is_alkes = false;
+
+    let sumberDropdown;
 </script>
 
 {#await promiseListMaster}
@@ -106,6 +108,7 @@
           <Button icon={Renew}
             on:click={() => {
               promiseListMaster = listFullMasterBMHP();
+              sumberDropdown.refreshValue();
             }}>Muat ulang</Button
           >
         </ToolbarContent>
@@ -159,7 +162,7 @@
     bind:value={nama_obat}
   />
   <br />
-  <DropDownSumber />
+  <DropDownSumber bind:this={sumberDropdown} />
 
   <Grid narrow>
     <Row>

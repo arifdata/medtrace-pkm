@@ -30,6 +30,10 @@
 
   let promiseSumber = tarikDataSumber();
 
+  export function refreshValue(){
+    promiseSumber = tarikDataSumber();
+  }
+
 </script>
 
 {#await promiseSumber}
