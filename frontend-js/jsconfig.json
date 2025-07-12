@@ -33,6 +33,6 @@
     "src/**/*.js",
     "src/**/*.svelte",
     "src/utils/toast.ts",
-    "src/utils/toast.ts"
+    "src/utils/crudUtils.ts",
   ]
 }

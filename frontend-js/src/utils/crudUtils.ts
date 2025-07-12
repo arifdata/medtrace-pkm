@@ -1,7 +1,7 @@
 import { client } from '../pb/client'
 import { successToast, errorToast } from './toast';
 
-export async function tambahDataPasien(nama, nomor_kartu, alamat, tanggal_lahir, nomor_telepon) {
+export async function tambahDataPasien(nama: string, nomor_kartu: string, alamat: string, tanggal_lahir: string, nomor_telepon: string): Promise<boolean> {
   // example create data
   const data = {
     nama_pasien: nama,
