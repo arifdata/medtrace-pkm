@@ -24,6 +24,9 @@
 
     import DropDownSumber from './DropDownSumber.svelte'
 
+    import Toastify from "toastify-js";
+    import "toastify-js/src/toastify.css";
+
     async function createNewMaster(){
       try {
         const data = {
@@ -134,6 +137,9 @@
   selectorPrimaryFocus="#nama-bmhp"
   on:click:button--secondary={() => {
     modalAddMaster = false;
+    nama_obat = "";
+    is_generik = true;
+    is_alkes = false;
   }}
   on:open
   on:close
@@ -141,14 +147,26 @@
     addLoading = true;
     createNewMaster().then((val) => {
       if (val) {
-        alert("Berhasil");
         addLoading = false;
         modalAddMaster = false;
         promiseListMaster = listFullMasterBMHP();
+        Toastify({
+          text: `Berhasil menambahkan data`,
+          duration: 3000,
+          gravity: "bottom",
+          style: {
+            background: "#42be65",
+          }}).showToast();
       } else {
-        alert("Gagal");
         addLoading = false;
         modalAddMaster = false;
+        Toastify({
+          text: `Gagal menambahkan data`,
+          duration: 3000,
+          gravity: "bottom",
+          style: {
+            background: "#fa4d56",
+          }}).showToast();
       }
     });
   }}

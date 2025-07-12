@@ -34,6 +34,11 @@
     promiseSumber = tarikDataSumber();
   }
 
+  function shouldFilterItem(item, value) {
+    if (!value) return true;
+    return item.text.toLowerCase().includes(value.toLowerCase());
+  }
+
 </script>
 
 {#await promiseSumber}
@@ -44,6 +49,7 @@
     titleText="Sumber"
     placeholder="Pilih satu sumber"
     items={itemComboBox(val)}
+    {shouldFilterItem}
     on:select={(val) => {
       idSumber = val['detail']['selectedItem']['idSumber'];
     }}
