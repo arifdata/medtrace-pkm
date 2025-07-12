@@ -34,5 +34,6 @@
     "src/**/*.svelte",
     "src/utils/toast.ts",
     "src/utils/crudUtils.ts",
+    "src/utils/dateUtils.ts",
   ]
 }

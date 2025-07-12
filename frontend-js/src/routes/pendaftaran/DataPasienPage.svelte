@@ -59,7 +59,6 @@
   }
 
   import {
-    DataTableSkeleton,
     InlineNotification,
     Pagination,
     DataTable,

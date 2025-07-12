@@ -1,6 +1,6 @@
 <script>
   import { client } from "../../pb/client.js";
-  import { successToast } from "../../utils/toast.js";
+  import { successToast } from "../../utils/toast";
 
   import {
     Button,
