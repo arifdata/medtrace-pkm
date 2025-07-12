@@ -20,6 +20,7 @@
       const item = {
         id: i,
         text: data[i]['sumber'],
+        idSumber: data[i]['id'],
       }
 
       items.push(item);
@@ -39,7 +40,15 @@
     titleText="Sumber"
     placeholder="Pilih satu sumber"
     items={itemComboBox(val)}
+    on:select={(val) => {
+      idSumber = val['detail']['selectedItem']['idSumber'];
+    }}
+    on:clear={(val) => {
+      idSumber = "";
+    }}
   />
+
+  <br />
 
   {:catch error}
   {error}
