@@ -1,9 +1,7 @@
 <script>
-  import Toastify from "toastify-js";
-  import "toastify-js/src/toastify.css";
+  import { successToast, errorToast, infoToast } from "./utils/toast";
   import "carbon-components-svelte/css/all.css";
   import {
-    Button,
     Header,
     Modal,
     HeaderUtilities,
@@ -43,37 +41,16 @@
         .collection("_superusers")
         .authWithPassword(email, password)
         .then(() => {
-          Toastify({
-            text: "Berhasil Log in",
-            duration: 3000,
-            gravity: "bottom",
-            style: {
-              background: "#42be65",
-            },
-          }).showToast();
+          successToast("Berhasil Login.");
         });
     } catch (e) {
-      Toastify({
-        text: "Gagal Log in: cek kembali input email & password anda.",
-        duration: 3000,
-        gravity: "bottom",
-        style: {
-          background: "#fa4d56",
-        },
-      }).showToast();
+      errorToast("Gagal Login. Cek email & password.");
     }
   }
 
   function logout() {
     client.authStore.clear();
-    Toastify({
-      text: "Berhasil log out",
-      duration: 3000,
-      gravity: "bottom",
-      style: {
-        background: "#4589ff",
-      },
-    }).showToast();
+    infoToast("Berhasil Log out.");
   }
 
   // some icons
@@ -183,18 +160,11 @@
     {#if $isLoggedIn}
       <SideNavLink icon={Dashboard} href="#/" text="Dashboard" />
       <SideNavMenu icon={IbmConsultingAdvantageAssistant} text="Pendaftaran">
-          <SideNavMenuItem href="#/data_pasien" text="Data Pasien" />
-          <!-- <SideNavMenuItem href="#/data_pasien/tambah" text="Tambah data pasien" /> -->
+        <SideNavMenuItem href="#/data_pasien" text="Data Pasien" />
       </SideNavMenu>
       <SideNavMenu icon={Medication} text="Farmasi">
-          <SideNavMenuItem href="#/farmasi/master_bmhp" text="Master BMHP" />
+        <SideNavMenuItem href="#/farmasi/master_bmhp" text="Master BMHP" />
       </SideNavMenu>
-
-        <!--
-        <SideNavMenuItem href="#/wild/card" text="Wild Card" />
-        <SideNavMenuItem href="/" text="Link 2" />
-        <SideNavMenuItem href="/" text="Link 3" />
-      -->
     {:else}
       <SideNavLink icon={Locked} text="Akses dikunci" />
     {/if}

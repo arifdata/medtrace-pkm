@@ -1,7 +1,6 @@
 <script>
   import { client } from "../../pb/client.js";
-  import Toastify from "toastify-js";
-  import "toastify-js/src/toastify.css";
+  import { successToast } from "../../utils/toast.js";
 
   import {
     Button,
@@ -134,14 +133,7 @@
                   bufferData["nomor_telepon"] = data["nomor_telepon"];
                   buttonDisabled = true;
 
-                  Toastify({
-                    text: `Berhasil perbarui data`,
-                    duration: 3000,
-                    gravity: "bottom",
-                    style: {
-                      background: "#42be65",
-                    },
-                  }).showToast();
+                  successToast("Berhasil perbarui data");
                 });
               });
             }}

@@ -1,82 +1,78 @@
 <script>
-    import { client } from "../../../pb/client";
+  import { client } from "../../../pb/client";
 
-    import {
-        DataTableSkeleton,
-        InlineNotification,
-        Pagination,
-        DataTable,
-        Toolbar,
-        ToolbarContent,
-        ToolbarSearch,
-        Button,
-        Link,
-        Loading,
-        Modal,
-        TextInput,
-        Toggle,
-        Grid,
-        Row,
-        Column,
-    } from "carbon-components-svelte";
+  import {
+    Pagination,
+    DataTable,
+    Toolbar,
+    ToolbarContent,
+    ToolbarSearch,
+    Button,
+    Loading,
+    Modal,
+    TextInput,
+    Toggle,
+    Grid,
+    Row,
+    Column,
+  } from "carbon-components-svelte";
 
-    import { Add, Renew } from "carbon-icons-svelte";
+  import { Add, Renew } from "carbon-icons-svelte";
 
-    import DropDownSumber from './DropDownSumber.svelte'
+  import DropDownSumber from "./DropDownSumber.svelte";
 
-    import Toastify from "toastify-js";
-    import "toastify-js/src/toastify.css";
-
-    async function createNewMaster(){
-      try {
-        const data = {
-          "nama_obat": nama_obat,
-          "sumber": idSumber,
-          "is_generik": is_generik,
-          "is_alkes": is_alkes,
-        };
-        await client.collection('master_bmhp').create(data);
-        return true;
-      } catch (err) {
-        return false;
-      }
+  async function createNewMaster() {
+    try {
+      const data = {
+        nama_obat: nama_obat,
+        sumber: idSumber,
+        is_generik: is_generik,
+        is_alkes: is_alkes,
+      };
+      await client.collection("master_bmhp").create(data);
+      return true;
+    } catch (err) {
+      return false;
     }
+  }
 
-    let modalAddMaster = false;
-    let addLoading = false;
+  let modalAddMaster = false;
+  let addLoading = false;
 
-    async function listFullMasterBMHP() {
-        const resultList = await client.collection("master_bmhp").getFullList({
-            sort: "nama_obat",
-            expand: "sumber",
-        });
-        return resultList;
+  async function listFullMasterBMHP() {
+    const resultList = await client.collection("master_bmhp").getFullList({
+      sort: "nama_obat",
+      expand: "sumber",
+    });
+    return resultList;
+  }
+
+  function generateRowMasterBMHP(data) {
+    let rowData = [];
+    for (let i = 0; i < data.length; i++) {
+      rowData.push({
+        id: data[i].id,
+        "nama-bmhp": data[i].nama_obat,
+        sumber: data[i].expand.sumber.sumber,
+        "is-generik": data[i].is_generik ? "Generik" : "Non-Gnrk",
+        "is-alkes": data[i].is_alkes ? "Alkes" : "Non-Alks",
+      });
     }
+    return rowData;
+  }
 
-    function generateRowMasterBMHP(data) {
-      let rowData = [];
-      for (let i = 0; i < data.length; i++) {
-        rowData.push({
-          id: data[i].id,
-          "nama-bmhp": data[i].nama_obat,
-          "sumber": data[i].expand.sumber.sumber,
-          "is-generik": data[i].is_generik ? "Generik" : "Non-Gnrk",
-          "is-alkes": data[i].is_alkes ? "Alkes" : "Non-Alks",
-        });
-      }
-      return rowData;
-    }
+  let promiseListMaster = listFullMasterBMHP();
+  let pageSize = 20;
+  let page = 1;
 
-    let promiseListMaster = listFullMasterBMHP();
-    let pageSize = 20;
-    let page = 1;
+  let nama_obat = "";
+  let idSumber;
+  let is_generik = true;
+  let is_alkes = false;
 
-    let nama_obat = "";
-    let idSumber;
-    let is_generik = true;
-    let is_alkes = false;
+  let sumberDropdown;
 
-    let sumberDropdown;
+  import { successToast, errorToast } from "../../../utils/toast";
 </script>
 
 {#await promiseListMaster}
@@ -102,13 +98,14 @@
       <Toolbar size="sm">
         <ToolbarContent>
           <ToolbarSearch persistent shouldFilterRows />
-          <Button icon={Add}
-			on:click={() => {
-				modalAddMaster = true;
-			}}
-            >Tambah Data</Button
+          <Button
+            icon={Add}
+            on:click={() => {
+              modalAddMaster = true;
+            }}>Tambah Data</Button
           >
-          <Button icon={Renew}
+          <Button
+            icon={Renew}
             on:click={() => {
               promiseListMaster = listFullMasterBMHP();
               sumberDropdown.refreshValue();
@@ -116,7 +113,7 @@
           >
         </ToolbarContent>
       </Toolbar>
-  </DataTable>
+    </DataTable>
     <Pagination
       bind:pageSize
       bind:page
@@ -124,10 +121,9 @@
       pageSizes={[20, 35, 50]}
     />
   {:else}
-  belum ada data
+    belum ada data
   {/if}
 {/await}
-
 
 <Modal
   bind:open={modalAddMaster}
@@ -150,28 +146,16 @@
         addLoading = false;
         modalAddMaster = false;
         promiseListMaster = listFullMasterBMHP();
-        Toastify({
-          text: `Berhasil menambahkan data`,
-          duration: 3000,
-          gravity: "bottom",
-          style: {
-            background: "#42be65",
-          }}).showToast();
+        successToast("Berhasil menambah data");
       } else {
         addLoading = false;
         modalAddMaster = false;
-        Toastify({
-          text: `Gagal menambahkan data`,
-          duration: 3000,
-          gravity: "bottom",
-          style: {
-            background: "#fa4d56",
-          }}).showToast();
+        errorToast("Gagal menambah data.");
       }
     });
   }}
 >
-  <Loading bind:active={addLoading}/>
+  <Loading bind:active={addLoading} />
 
   <TextInput
     id="nama-bmhp"
@@ -180,32 +164,28 @@
     bind:value={nama_obat}
   />
   <br />
-  <DropDownSumber bind:this={sumberDropdown} bind:idSumber={idSumber} />
+  <DropDownSumber bind:this={sumberDropdown} bind:idSumber />
 
   <Grid narrow>
     <Row>
       <Column>
-  <Toggle
-    labelText="Apakah termasuk Alkes"
-    bind:toggled={is_alkes}
-    labelA="Non Alkes"
-    labelB="Alkes"
-    size="sm"
-  />
-
+        <Toggle
+          labelText="Apakah termasuk Alkes"
+          bind:toggled={is_alkes}
+          labelA="Non Alkes"
+          labelB="Alkes"
+          size="sm"
+        />
       </Column>
       <Column>
-  <Toggle
-    labelText="Apakah termasuk Obat Generik"
-    bind:toggled={is_generik}
-    labelA="Non Generik"
-    labelB="Generik"
-    size="sm"
-  />
-
+        <Toggle
+          labelText="Apakah termasuk Obat Generik"
+          bind:toggled={is_generik}
+          labelA="Non Generik"
+          labelB="Generik"
+          size="sm"
+        />
       </Column>
     </Row>
   </Grid>
-
-
 </Modal>
