@@ -5,6 +5,7 @@
 
   // some icons
   import { Add, Renew } from "carbon-icons-svelte";
+  import { data, test } from '../../store/sumber-store.ts';
 
   // // function untuk generate fake data
   // async function generateDataPasien() {
@@ -182,7 +183,7 @@
 {/await}
 
 <!-- <button -->
-<!--   on:click={() => { -->
-<!--     generateBanyakDataPasien(500); -->
-<!--   }}>Generate 500 Fake Data</button -->
+<!--   on:click={async () => { -->
+<!--     data.set({value: await test()}); -->
+<!--   }}>Coba</button -->
 <!-- > -->
