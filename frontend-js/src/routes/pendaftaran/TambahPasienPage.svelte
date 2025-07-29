@@ -1,4 +1,6 @@
 <script>
+  // @ts-nocheck
+
   import {
     Tile,
     Grid,
@@ -35,14 +37,13 @@
     tanggalInput = undefined;
     nomorTeleponInput = undefined;
   }
-
 </script>
 
 <h4>Tambah pasien</h4>
 
-<br>
+<br />
 
-<Grid noGutterLeft narrow >
+<Grid noGutterLeft narrow>
   <Row>
     <Column>
       <Tile>

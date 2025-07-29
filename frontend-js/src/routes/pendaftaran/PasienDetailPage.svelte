@@ -19,6 +19,7 @@
 
   import { parseDatePicker } from "../../utils/dateUtils";
 
+  // @ts-ignore
   import { isEqual } from "lodash";
   import { Indonesian } from "flatpickr/dist/l10n/id.js";
   export let params = {};

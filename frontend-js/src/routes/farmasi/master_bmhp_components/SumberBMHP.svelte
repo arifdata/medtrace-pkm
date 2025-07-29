@@ -4,7 +4,6 @@
     Button,
     Modal,
     TextInput,
-    ButtonSet,
     Grid,
     Row,
     Column,
@@ -31,7 +30,9 @@
     await client.collection("sumber").create(data);
   }
 
-  let promiseListSumber = listFullSumber();
+  import { data, setValueSumber } from "../../../store/sumber-store";
+
+  setValueSumber();
 </script>
 
 <Modal
@@ -50,13 +51,13 @@
     addLoading = true;
     createNewSumber(valueNewSumber).then(() => {
       valueNewSumber = "";
-      promiseListSumber = listFullSumber();
       addLoading = false;
       modalSumberOpened = false;
+      setValueSumber();
     });
   }}
 >
-<Loading bind:active={addLoading}/>
+  <Loading bind:active={addLoading} />
   <TextInput
     id="form-sumber"
     labelText="Sumber BMHP"
@@ -69,29 +70,19 @@
   <Row>
     <Column><h6>Sumber BMHP</h6></Column>
     <Column></Column>
-    <Column></Column>
-    <Column
-      ><ButtonSet>
-        <Button
-          icon={Add}
-          size="small"
-          on:click={() => (modalSumberOpened = true)}>Tambah sumber</Button
-        >
-        <Button
-          icon={Renew}
-          size="small"
-          on:click={() => {
-            promiseListSumber = listFullSumber();
-          }}>Muat ulang</Button
-        >
-      </ButtonSet></Column
-    >
+    <Column>
+      <Button
+        icon={Add}
+        size="small"
+        on:click={() => (modalSumberOpened = true)}>Tambah sumber</Button
+      >
+    </Column>
   </Row>
 </Grid>
 
 <br />
 
-{#await promiseListSumber}
+{#await $data}
   <Loading />
 {:then val}
   {#if val.length > 0}

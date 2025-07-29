@@ -5,7 +5,6 @@
 
   // some icons
   import { Add, Renew } from "carbon-icons-svelte";
-  import { data, test } from '../../store/sumber-store.ts';
 
   // // function untuk generate fake data
   // async function generateDataPasien() {

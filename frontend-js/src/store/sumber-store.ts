@@ -1,11 +1,22 @@
 import { writable } from 'svelte/store';
 import { client } from "../pb/client";
+import type { RecordModel } from 'pocketbase';
 
-export const data = writable({
-  value: 0,
-});
+export const data = writable([]);
 
-export async function test(): any {
-  const record = await client.collection('sumber').getFirstListItem();
-  return record;
+async function getFullSumber(): Promise<RecordModel[]> {
+  let sumber: RecordModel[] = [];
+  const records = await client.collection('sumber').getFullList({
+    sort: 'sumber',
+  });
+
+  for (let i = 0; i < records.length; i++) {
+    sumber.push(records[i]);
+  }
+
+  return sumber;
+}
+
+export async function setValueSumber(): Promise<void> {
+  data.set(await getFullSumber());
 }
