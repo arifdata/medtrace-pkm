@@ -1,17 +1,9 @@
 <script>
-  import { client } from '../../../pb/client'
   import { ComboBox } from "carbon-components-svelte";
 
-  export let idSumber = "";
+  import { data } from '../../../store/sumber-store.ts'
 
-  async function tarikDataSumber(){
-    try {
-      const records = await client.collection('sumber').getFullList();
-      return records;
-    } catch (error) {
-      alert(error);
-    }
-  }
+  export let idSumber = "";
 
   function itemComboBox(data) {
     let items = [];
@@ -28,12 +20,6 @@
     return items;
   }
 
-  let promiseSumber = tarikDataSumber();
-
-  export function refreshValue(){
-    promiseSumber = tarikDataSumber();
-  }
-
   function shouldFilterItem(item, value) {
     if (!value) return true;
     return item.text.toLowerCase().includes(value.toLowerCase());
@@ -41,7 +27,7 @@
 
 </script>
 
-{#await promiseSumber}
+{#await $data}
   Loading...
   {:then val}
 
