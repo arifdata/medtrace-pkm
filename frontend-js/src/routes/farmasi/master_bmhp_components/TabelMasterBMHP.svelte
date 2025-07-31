@@ -15,6 +15,7 @@
     Grid,
     Row,
     Column,
+    Link,
   } from "carbon-components-svelte";
 
   import { Add, Renew } from "carbon-icons-svelte";
@@ -113,6 +114,13 @@
           >
         </ToolbarContent>
       </Toolbar>
+        <svelte:fragment slot="cell" let:row let:cell>
+          {#if cell.key === "nama-bmhp"}
+            <Link href={`#/farmasi/master_bmhp/detail/${row["id"]}`} target="_blank">{cell.value}</Link>
+          {:else}
+            {cell.value}
+          {/if}
+        </svelte:fragment>
     </DataTable>
     <Pagination
       bind:pageSize
