@@ -20,3 +20,5 @@ async function getFullSumber(): Promise<RecordModel[]> {
 export async function setValueSumber(): Promise<void> {
   data.set(await getFullSumber());
 }
+
+setValueSumber();

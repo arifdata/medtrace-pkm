@@ -10,18 +10,14 @@
     UnorderedList,
     ListItem,
     Loading,
+    Link,
   } from "carbon-components-svelte";
 
-  import { Add, Renew } from "carbon-icons-svelte";
+  import { Add } from "carbon-icons-svelte";
 
   let modalSumberOpened = false;
   let valueNewSumber = "";
-  let addLoading = false;
-
-  async function listFullSumber() {
-    const resultList = await client.collection("sumber").getFullList();
-    return resultList;
-  }
+  let loading = false;
 
   async function createNewSumber(value) {
     const data = {
@@ -30,10 +26,59 @@
     await client.collection("sumber").create(data);
   }
 
+  async function editSumber(id, newValue) {
+    const data = {
+      sumber: newValue,
+    };
+    await client.collection("sumber").update(id, data);
+  }
+
   import { data, setValueSumber } from "../../../store/sumber-store";
 
-  setValueSumber();
+  let modalEditOpened = false;
+  let idModal = "";
+  let editNewSumber = "";
+  let buffereditNewSumber = "";
+  let disableEditModalPrimaryButton = false;
 </script>
+
+<Modal
+  bind:open={modalEditOpened}
+  on:open
+  bind:primaryButtonDisabled={disableEditModalPrimaryButton}
+  on:close={() => {
+    idModal = "";
+    editNewSumber = "";
+  }}
+  modalHeading="Edit Nama Sumber"
+  primaryButtonText="Submit"
+  secondaryButtonText="Cancel"
+  selectorPrimaryFocus="#edit-sumber"
+  on:click:button--secondary={() => {
+    modalEditOpened = false;
+  }}
+  on:submit={() => {
+    loading = true;
+    editSumber(idModal, editNewSumber).then(() => {
+      loading = false;
+      setValueSumber();
+      modalEditOpened = false;
+    });
+  }}
+>
+  <Loading bind:active={loading} />
+  <TextInput
+    bind:value={editNewSumber}
+    id="edit-sumber"
+    on:input={() => {
+      if (editNewSumber == "" || editNewSumber == buffereditNewSumber) {
+        disableEditModalPrimaryButton = true;
+      } else {
+        disableEditModalPrimaryButton = false;
+      }
+    }}
+  />
+</Modal>
 
 <Modal
   bind:open={modalSumberOpened}
@@ -48,16 +93,16 @@
   on:open
   on:close
   on:submit={() => {
-    addLoading = true;
+    loading = true;
     createNewSumber(valueNewSumber).then(() => {
       valueNewSumber = "";
-      addLoading = false;
+      loading = false;
       modalSumberOpened = false;
       setValueSumber();
     });
   }}
 >
-  <Loading bind:active={addLoading} />
+  <Loading bind:active={loading} />
   <TextInput
     id="form-sumber"
     labelText="Sumber BMHP"
@@ -88,7 +133,17 @@
   {#if val.length > 0}
     <UnorderedList>
       {#each val as item}
-        <ListItem>{item.sumber}</ListItem>
+        <ListItem>
+          <Link
+            on:click={() => {
+              modalEditOpened = true;
+              idModal = item.id;
+              editNewSumber = item.sumber;
+              buffereditNewSumber = item.sumber;
+              disableEditModalPrimaryButton = true;
+            }}>{item.sumber}</Link
+          >
+        </ListItem>
       {/each}
     </UnorderedList>
   {:else}
