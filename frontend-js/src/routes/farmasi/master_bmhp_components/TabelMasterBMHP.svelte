@@ -21,6 +21,7 @@
   import { Add, Renew } from "carbon-icons-svelte";
 
   import DropDownSumber from "./DropDownSumber.svelte";
+  import { data } from "../../../store/sumber-store";
 
   async function createNewMaster() {
     try {
@@ -48,15 +49,15 @@
     return resultList;
   }
 
-  function generateRowMasterBMHP(data) {
+  function generateRowMasterBMHP(value) {
     let rowData = [];
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < value.length; i++) {
       rowData.push({
-        id: data[i].id,
-        "nama-bmhp": data[i].nama_obat,
-        sumber: data[i].expand.sumber.sumber,
-        "is-generik": data[i].is_generik ? "Generik" : "Non-Gnrk",
-        "is-alkes": data[i].is_alkes ? "Alkes" : "Non-Alks",
+        id: value[i].id,
+        "nama-bmhp": value[i].nama_obat,
+        sumber: $data[i].sumber,
+        "is-generik": value[i].is_generik ? "Generik" : "Non-Gnrk",
+        "is-alkes": value[i].is_alkes ? "Alkes" : "Non-Alks",
       });
     }
     return rowData;
@@ -114,13 +115,16 @@
           >
         </ToolbarContent>
       </Toolbar>
-        <svelte:fragment slot="cell" let:row let:cell>
-          {#if cell.key === "nama-bmhp"}
-            <Link href={`#/farmasi/master_bmhp/detail/${row["id"]}`} target="_blank">{cell.value}</Link>
-          {:else}
-            {cell.value}
-          {/if}
-        </svelte:fragment>
+      <svelte:fragment slot="cell" let:row let:cell>
+        {#if cell.key === "nama-bmhp"}
+          <Link
+            href={`#/farmasi/master_bmhp/detail/${row["id"]}`}
+            target="_blank">{cell.value}</Link
+          >
+        {:else}
+          {cell.value}
+        {/if}
+      </svelte:fragment>
     </DataTable>
     <Pagination
       bind:pageSize

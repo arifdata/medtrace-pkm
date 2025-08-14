@@ -34,6 +34,7 @@
   }
 
   import { data, setValueSumber } from "../../../store/sumber-store";
+  setValueSumber();
 
   let modalEditOpened = false;
   let idModal = "";
