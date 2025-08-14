@@ -21,7 +21,7 @@
   import { Add, Renew } from "carbon-icons-svelte";
 
   import DropDownSumber from "./DropDownSumber.svelte";
-  import { data } from "../../../store/sumber-store";
+  import { storeSumber } from "../../../store/sumber-store";
 
   async function createNewMaster() {
     try {
@@ -55,7 +55,7 @@
       rowData.push({
         id: value[i].id,
         "nama-bmhp": value[i].nama_obat,
-        sumber: $data[i].sumber,
+        sumber: $storeSumber[i].sumber,
         "is-generik": value[i].is_generik ? "Generik" : "Non-Gnrk",
         "is-alkes": value[i].is_alkes ? "Alkes" : "Non-Alks",
       });

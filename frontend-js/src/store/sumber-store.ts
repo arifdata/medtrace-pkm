@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import { client } from "../pb/client";
 import type { RecordModel } from 'pocketbase';
 
-export const data = writable<RecordModel[]>([]);
+export const storeSumber = writable<RecordModel[]>([]);
 
 async function getFullSumber(): Promise<RecordModel[]> {
   let sumber: RecordModel[] = [];
@@ -18,7 +18,7 @@ async function getFullSumber(): Promise<RecordModel[]> {
 }
 
 export async function setValueSumber(): Promise<void> {
-  data.set(await getFullSumber());
+  storeSumber.set(await getFullSumber());
 }
 
 setValueSumber();

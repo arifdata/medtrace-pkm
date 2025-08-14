@@ -1,7 +1,7 @@
 <script>
   import { ComboBox } from "carbon-components-svelte";
 
-  import { data } from '../../../store/sumber-store.ts'
+  import { storeSumber } from "../../../store/sumber-store.ts";
 
   export let idSumber = "";
 
@@ -11,9 +11,9 @@
     for (let i = 0; i < data.length; i++) {
       const item = {
         id: i,
-        text: data[i]['sumber'],
-        idSumber: data[i]['id'],
-      }
+        text: data[i]["sumber"],
+        idSumber: data[i]["id"],
+      };
 
       items.push(item);
     }
@@ -24,20 +24,18 @@
     if (!value) return true;
     return item.text.toLowerCase().includes(value.toLowerCase());
   }
-
 </script>
 
-{#await $data}
+{#await $storeSumber}
   Loading...
-  {:then val}
-
+{:then val}
   <ComboBox
     titleText="Sumber"
     placeholder="Pilih satu sumber"
     items={itemComboBox(val)}
     {shouldFilterItem}
     on:select={(val) => {
-      idSumber = val['detail']['selectedItem']['idSumber'];
+      idSumber = val["detail"]["selectedItem"]["idSumber"];
     }}
     on:clear={(val) => {
       idSumber = "";
@@ -45,8 +43,6 @@
   />
 
   <br />
-
-  {:catch error}
+{:catch error}
   {error}
-
 {/await}

@@ -33,7 +33,7 @@
     await client.collection("sumber").update(id, data);
   }
 
-  import { data, setValueSumber } from "../../../store/sumber-store";
+  import { storeSumber, setValueSumber } from "../../../store/sumber-store";
   setValueSumber();
 
   let modalEditOpened = false;
@@ -128,7 +128,7 @@
 
 <br />
 
-{#await $data}
+{#await $storeSumber}
   <Loading />
 {:then val}
   {#if val.length > 0}
