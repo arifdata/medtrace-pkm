@@ -57,8 +57,10 @@
         id: value[i].id,
         "nama-bmhp": value[i].nama_obat,
         sumber: $storeSumber[i].sumber,
-        "is-generik": value[i].is_generik ? "Generik" : "Non-Gnrk",
-        "is-alkes": value[i].is_alkes ? "Alkes" : "Non-Alks",
+        "is-antibiotik": value[i].is_antibiotik ? "Antibiotik" : "Non-AB",
+        "is-narko-psiko": value[i].is_narko_psiko
+          ? "Narkotik Psikotropik"
+          : "Non-Narko-Psiko",
       });
     }
     return rowData;
@@ -91,8 +93,8 @@
       headers={[
         { key: "nama-bmhp", value: "Nama BMHP" },
         { key: "sumber", value: "Sumber" },
-        { key: "is-generik", value: "Generik?" },
-        { key: "is-alkes", value: "Alkes?" },
+        { key: "is-antibiotik", value: "Antibiotik?" },
+        { key: "is-narko-psiko", value: "Narko | Psiko?" },
       ]}
       rows={generateRowMasterBMHP(val)}
       {page}
