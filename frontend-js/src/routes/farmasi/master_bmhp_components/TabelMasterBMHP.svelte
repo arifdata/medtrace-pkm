@@ -21,7 +21,8 @@
   import { Add, Renew } from "carbon-icons-svelte";
 
   import DropDownSumber from "./DropDownSumber.svelte";
-  import { storeSumber } from "../../../store/sumber-store";
+  import { storeSumber, setValueSumber } from "../../../store/sumber-store";
+  setValueSumber();
 
   async function createNewMaster() {
     try {
